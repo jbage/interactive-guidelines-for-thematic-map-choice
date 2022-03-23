@@ -1,0 +1,103 @@
+{
+  "graph": {
+	"id": "common-thematic-map-types",
+    "nodes": {
+    "1": {
+	    "name":"Common Thematic Map Types",
+	    "type":"root"},
+    "2": {
+	    "name":"Qualitative",
+	    "type":"node"}, 
+	  "3": {
+	    "name":"Quantitative",
+	    "type":"node"},
+	  "4": {
+	    "name":"Abrupt",
+	    "type":"node"},
+	  "5": {
+	    "name":"Smooth",
+	    "type":"node"},
+	  "6": {
+	    "name":"Continous",
+	    "type":"node"},
+	  "7": {
+	    "name":"Discrete",
+	    "type":"node"},
+	  "8": {
+	    "name":"Continous",
+	    "type":"node"},
+	  "9": {
+	    "name":"Discrete",
+	    "type":"node"},
+	  "10": {
+	    "name":"Nominal",
+	    "type":"leaf"},
+	  "11": {
+	    "name":"Choropleth",
+	    "type":"leaf"},
+	  "12": {
+	    "name":"Proportional Symbol",
+	    "type":"leaf"},
+    "13":{
+	    "name":"Isoline",
+	    "type":"leaf"},
+	  "14": {
+	    "name":"Dot Density",
+	    "type":"leaf"}
+    },
+    "edges": [
+      {
+        "source": "1",
+        "target": "2"
+      },
+      {
+        "source": "1",
+        "target": "3"
+      },
+      {
+        "source": "2",
+        "target": "10"
+      },
+      {
+        "source": "3",
+        "target": "4"
+      },
+      {
+        "source": "3",
+        "target": "5"
+      },
+      {
+        "source": "4",
+        "target": "6"
+      },
+      {
+        "source": "4",
+        "target": "7"
+      },
+      {
+        "source": "5",
+        "target": "8"
+      },
+      {
+        "source": "5",
+        "target": "9"
+      },	 
+      {
+        "source": "6",
+        "target": "11"
+      },
+      {
+        "source": "7",
+        "target": "12"
+      },
+      {
+        "source": "8",
+        "target": "13"
+      },
+      {
+        "source": "9",
+        "target": "14"
+      }	  
+    ]
+  }
+}
