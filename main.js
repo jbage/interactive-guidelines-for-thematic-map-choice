@@ -15,7 +15,7 @@ scene.background = new THREE.Color(0xfafafa);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-cam.position.z = 20;
+cam.position.z = 0;
 cam.position.y = 0;
 
 document.getElementById("scene").appendChild(renderer.domElement);
@@ -46,12 +46,15 @@ let example1Button = document.querySelector("#example1Button");
 example1Button.addEventListener('click',()=>{
     createObjects("algorithm_auriol.json");
     document.getElementById("selectDecisionTree").style.visibility ="hidden";
+    document.getElementById("lockButton").style.display="block";
 });
 
 let example2Button = document.querySelector("#example2Button");
 example2Button.addEventListener('click',()=>{
     createObjects("common-thematic-map-types.json");
     document.getElementById("selectDecisionTree").style.visibility ="hidden";
+    document.getElementById("lockButton").style.display="block";
+
 });
 
 let keyboard = [];
@@ -102,25 +105,68 @@ loadJSON(jsonFile, function(text){
     let jsonNodes = jsonData.graph.nodes;
     let i;
     let highlight = false;
+    let radioButton1 = document.querySelectorAll('input[name="positioning"]');
+    let radioButton2 = document.querySelectorAll('input[name="object"]');
+    let selectedSize;
+    for (const radioButton of radioButton1) {
+        if (radioButton.checked) {
+            selectedSize = radioButton.value;
+        }
+    }
+    let selectedObject;
+    for (const radioButton of radioButton2) {
+        if (radioButton.checked) {
+            selectedObject = radioButton.value;
+        }
+    }
+
     //extracting leaf-nodes into leafArray
-    for (i = 0; i<jsonNodes.length; i++)
+    for (i = 0; i < jsonNodes.length; i++)
     {
         if (jsonNodes[i].type == "leaf")
         {
         leafArray.push(jsonNodes[i]);
         }
     }
-    //defining positions of objects
-    let startPoint = leafArray.length * 2.5 - 2.5;
-    //creating spheres from leafArray
-    for(i = 0; i < leafArray.length; i++){
-        let positionX = i * 5 - startPoint;
-        let positionZ = positionX * positionX * 0.05;
-        generateSphere([positionX,positionZ],leafArray[i].path, highlight);
-        //generateBox([position,0.5,1],leafArray[i].path, highlight);
+    //if the user chooses to arrange objects in a straight way
+    if (selectedSize == "straight"){
+        //defining positions of objects
+        //startPoint variable to define where the positioning of objects starts. It is dependant of the qunatity of objects
+        let startPoint = leafArray.length * 3;
+        //variable to define the distance between the objects. This is also dependant of the quantity of objects
+        let positionHelper = leafArray.length * 6 / (leafArray.length - 1)
+        //creating spheres from leafArray
+        for(i = 0; i < leafArray.length; i++){
+            let positionX = i * positionHelper - startPoint;
+            let positionZ = -startPoint;
+            if(selectedObject == "sphere"){
+                generateSphere([positionX,positionZ],leafArray[i].path, highlight);
+            }
+            else{
+                generateBox([positionX,positionZ],leafArray[i].path, highlight);
+            }
+        }
     }
-
-
+    //if the user chooses to arrange objects in a circular way
+    if (selectedSize == "circular"){
+        //defining positions of objects
+        //variable to define the distance between objects. Since it is a circular positioning it is defined in degrees
+        let positionHelper = 90/(leafArray.length-1);
+        //variable to define the distance of the objects to the camera. Dependant to qunaitity of objects to ensure that the space between objects stays large enough and the overview is secured
+        let radius = leafArray.length * 3;
+        //startpoint also in degrees. Starting with 225 since the coordinates will be calculated from the radius and the counterclockwise angle from the positive x axis
+        let startPoint = 225;
+        for(i = 0; i < leafArray.length; i++){
+            let positionX = radius * getCosFromDegrees(startPoint + (i * positionHelper));
+            let positionZ = radius * getSinFromDegrees(startPoint + (i * positionHelper));
+            if(selectedObject == "sphere"){
+                generateSphere([positionX,positionZ],leafArray[i].path, highlight);
+            }
+            else{
+                generateBox([positionX,positionZ],leafArray[i].path, highlight);
+            }
+        }
+    }
 });
 }
 //create spheres from leaf-nodes
@@ -153,11 +199,12 @@ function generateBox(position, picture, highlight) {
         value = 1;
     }
     let boxTexture = new THREE.TextureLoader().load(picture);
-    let boxGeometry = new THREE.BoxGeometry(value, value, value);
+    let boxGeometry = new THREE.BoxGeometry(value*2, value*2, value*2);
     let boxMaterial = new THREE.MeshBasicMaterial({ map: boxTexture });
     let box = new THREE.Mesh(boxGeometry, boxMaterial);
     //defining positioning of box
-    box.position.set(position[0], value/2, position[1])
+    box.position.set(position[0], value/2, position[1]);
+    box.lookAt(cam.position);
     scene.add(box);
 }
 //generate Box
@@ -178,11 +225,23 @@ function generateSphere(position, picture, highlight){
     let sphereMaterial = new THREE.MeshBasicMaterial( {map: sphereTexture});
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     //defining positioning of sphere
-    sphere.position.set(position[0], value/2, position[1])
+    sphere.position.set(position[0], value/2, position[1]);
+    sphere.lookAt(cam.position);
     scene.add(sphere);
-    console.log(sphere.position.x);
-    console.log(sphere.position.z);
-    } 
+    }
+
+function generateText(){
+    
+}
+
+//help function to calculate Cosinus from degrees    
+function getCosFromDegrees(degrees) {
+    return Math.cos(degrees / 180 * Math.PI);    
+}
+//help function to calculate Sinus from degrees   
+function getSinFromDegrees(degrees) {
+    return Math.sin(degrees / 180 * Math.PI);    
+}
 
 //render function
 function drawScene() {

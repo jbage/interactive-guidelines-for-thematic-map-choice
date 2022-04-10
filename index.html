@@ -4,18 +4,29 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href= "node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href= "css/style.css" rel="stylesheet">
     <script src="node_modules/three/build/three.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="node_modules/three/examples/js/controls/PointerLockControls.js"></script>
     
-    <title>Interactive Guidelines for Thematic Maps</title>
+    <title>Interactive Guidelines for Thematic Map Choice</title>
   </head>
   <body>
     <div id="selectDecisionTree">
-      <button id="example1Button">Erstes Beispiel</button>
-      <button id="example2Button">Zweites Beispiel</button>
+      <input class="form-check-input" type="radio" id="straight" name="positioning" value="straight" checked>
+        <label class="form-check-label" for="straight">Straight</label>
+        <input class="form-check-input" type="radio" id="circular" name="positioning" value="circular">
+        <label class="form-check-label" for="circular">Circular</label>
+        <input class="form-check-input" type="radio" id="sphere" name="object" value="sphere" checked>
+        <label class="form-check-label" for="straight">Sphere</label>
+        <input class="form-check-input" type="radio" id="box" name="object" value="box">
+        <label class="form-check-label" for="circular">Box</label>
+      <button type ="button" class="btn btn-primary" id="example1Button">Erstes Beispiel</button>
+      <button type ="button" class="btn btn-primary" id="example2Button">Zweites Beispiel</button>
     </div>
     <div id="selectionArea"></div>
-    <button id="lockButton">Steuerung starten</button>
+    <button type ="button" class="btn btn-primary" id="lockButton">Steuerung starten</button>
     <div id="scene"></div>
     <script type="module" src="/main.js"></script>
   </body>

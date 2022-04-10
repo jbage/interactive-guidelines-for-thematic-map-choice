@@ -1,66 +1,67 @@
 {
   "graph": {
-	"id": "common-thematic-map-types",
+	"id": "algorithm-auriol",
     "nodes": [
     {
       "id":"1",
-	    "name":"Common Thematic Map Types",
+	    "name":"Algorithm Thematic Map Types",
 	    "type":"root"},
     {
       "id":"2",
-	    "name":"Qualitative",
+	    "name":"Polygon",
 	    "type":"node"}, 
 	  {
       "id":"3",
-	    "name":"Quantitative",
-	    "type":"node"},
+	    "name":"Point",
+	    "type":"leaf"},
 	  {
       "id":"4",
-	    "name":"Abrupt",
-	    "type":"node"},
+	    "name":"Nominal",
+	    "type":"leaf"},
 	  {
       "id":"5",
-	    "name":"Smooth",
-	    "type":"node"},
+	    "name":"Ratio",
+	    "type":"leaf"},
 	  {
       "id":"6",
-	    "name":"Continous",
-	    "type":"node"},
+	    "name":"Nominal",
+	    "type":"leaf"},
 	  {
       "id":"7",
-	    "name":"Discrete",
-	    "type":"node"},
+	    "name":"Ratio",
+	    "type":"leaf"},
 	  {
       "id":"8",
-	    "name":"Continous",
-	    "type":"node"},
+	    "name":"Interval",
+	    "type":"leaf"},
 	  {
       "id":"9",
-	    "name":"Discrete",
-	    "type":"node"},
-	  {
-      "id":"10",
-	    "name":"Nominal",
-	    "type":"leaf",
-      "path":"img/globe.jpg"},
-	  {
-      "id":"11",
 	    "name":"Choropleth",
 	    "type":"leaf",
       "path":"img/globe.jpg"},
 	  {
+      "id":"10",
+	    "name":"Pie Chart",
+	    "type":"node",
+      "path":"img/globe.jpg"},
+	  {
+      "id":"11",
+	    "name":"Graduated Circle",
+	    "type":"leaf",
+      "path":"img/globe.jpg"},
+	  {
       "id":"12",
-	    "name":"Proportional Symbol",
+	    "name":"Dot",
 	    "type":"leaf",
       "path":"img/globe.jpg"},
     {
       "id":"13",
-	    "name":"Isoline",
+	    "name":"Heat",
 	    "type":"leaf",
-      "path":"img/kruse.png"},
-	  {
+      "path":"img/globe.jpg"},
+    {
       "id":"14",
-	    "name":"Dot Density",
+	    "name":"Heat",
 	    "type":"leaf",
       "path":"img/globe.jpg"}
     ],
@@ -75,34 +76,50 @@
       },
       {
         "source": "2",
-        "target": "10"
-      },
-      {
-        "source": "3",
         "target": "4"
       },
       {
-        "source": "3",
+        "source": "2",
         "target": "5"
       },
       {
-        "source": "4",
+        "source": "3",
         "target": "6"
       },
       {
-        "source": "4",
+        "source": "3",
         "target": "7"
       },
       {
-        "source": "5",
+        "source": "3",
         "target": "8"
       },
       {
-        "source": "5",
+        "source": "3",
+        "target": "13"
+      },
+      {
+        "source": "4",
         "target": "9"
       },	 
       {
+        "source": "5",
+        "target": "9"
+      },
+      {
+        "source": "5",
+        "target": "10"
+      },
+      {
         "source": "6",
+        "target": "11"
+      },
+      {
+        "source": "6",
+        "target": "12"
+      },
+      {
+        "source": "7",
         "target": "11"
       },
       {
@@ -111,12 +128,8 @@
       },
       {
         "source": "8",
-        "target": "13"
-      },
-      {
-        "source": "9",
-        "target": "14"
-      }	  
+        "target": "12"
+      }	 	  
     ]
   }
 }
