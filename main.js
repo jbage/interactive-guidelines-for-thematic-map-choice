@@ -15,44 +15,54 @@ scene.background = new THREE.Color(0xfafafa);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-cam.position.z = 0;
-cam.position.y = 0;
+//setting up position for camera
+cam.position.y = 0.5;
 
 document.getElementById("scene").appendChild(renderer.domElement);
 
+//adding directional light to the scene
 var directionalLight = new THREE.DirectionalLight({color: 0xFFFFFF, intensity: 100});
 directionalLight.position.set (0, 1, 0);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
 
+//adding ambient light to the scene
 var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
 //Initialize ThreeJS
 
-
+//setting up a grid for orientation
 let gridHelper = new THREE.GridHelper(100,20, 0x0a0a0a, 0x0a0a0a);
 gridHelper.position.set (0,-0.5,0);
 scene.add(gridHelper);
 
-//Camera Controls
+//setting up the camera controls
 let controls = new THREE.PointerLockControls(cam, renderer.domElement);
 let clock = new THREE.Clock();
 
+//event listener for lock-button causing the mouse to be locked and used as camera control for the scene
 let lockButton = document.querySelector("#lockButton");
 lockButton.addEventListener('click',()=>{
     controls.lock();
 });
+
+//event listener for example-button1 which will load the first example decision tree
 let example1Button = document.querySelector("#example1Button");
 example1Button.addEventListener('click',()=>{
     createObjects("algorithm_auriol.json");
+    //hide selection area of decision trees
     document.getElementById("selectDecisionTree").style.visibility ="hidden";
+    //show button to lock controls
     document.getElementById("lockButton").style.display="block";
 });
 
+//event listener for example-button2 which will load the second example decision tree
 let example2Button = document.querySelector("#example2Button");
 example2Button.addEventListener('click',()=>{
     createObjects("common-thematic-map-types.json");
+    //hide selection area of decision trees
     document.getElementById("selectDecisionTree").style.visibility ="hidden";
+    //show button to lock controls
     document.getElementById("lockButton").style.display="block";
 
 });
@@ -104,7 +114,7 @@ loadJSON(jsonFile, function(text){
     let jsonData = JSON.parse(text);
     let jsonNodes = jsonData.graph.nodes;
     let i;
-    let highlight = false;
+    let highlight = true;
     let radioButton1 = document.querySelectorAll('input[name="positioning"]');
     let radioButton2 = document.querySelectorAll('input[name="object"]');
     let selectedSize;
@@ -190,6 +200,12 @@ loadJSON(jsonFile, function(text){
 //extract nodes into array
 
 //generate Box
+/**
+ * Creates a box and adds it to the scene
+ * @param {Array} position Array containing the x- and z-coordinate of the box 
+ * @param {String} picture path of the image-data which will be used as texture for the box
+ * @param {boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
+ */
 function generateBox(position, picture, highlight) {
     let value;
     if (highlight){
@@ -198,18 +214,27 @@ function generateBox(position, picture, highlight) {
     else{
         value = 1;
     }
+    //creating box with texture, geometry and material
     let boxTexture = new THREE.TextureLoader().load(picture);
     let boxGeometry = new THREE.BoxGeometry(value*2, value*2, value*2);
     let boxMaterial = new THREE.MeshBasicMaterial({ map: boxTexture });
     let box = new THREE.Mesh(boxGeometry, boxMaterial);
-    //defining positioning of box
+    //setting position of the box
     box.position.set(position[0], value/2, position[1]);
+    //facing the camera
     box.lookAt(cam.position);
+    //adding box to the scene
     scene.add(box);
 }
 //generate Box
 
 //generate Sphere
+/**
+ * Creates a sphere and adds it to the scene
+ * @param {Array} position Array containing the x- and z-coordinate of the box 
+ * @param {String} picture path of the image-data which will be used as texture for the sphere
+ * @param {boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
+ */
 function generateSphere(position, picture, highlight){
     let value;
     if (highlight){
@@ -218,15 +243,16 @@ function generateSphere(position, picture, highlight){
     else{
         value = 1;
     }
-    //defining texture of sphere
+    //creating sphere with texture, geometry and material
     let sphereTexture = new THREE.TextureLoader().load(picture);
-    //defining geometry of sphere
     let sphereGeometry = new THREE.SphereGeometry(value);
     let sphereMaterial = new THREE.MeshBasicMaterial( {map: sphereTexture});
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    //defining positioning of sphere
+    //setting position of sphere
     sphere.position.set(position[0], value/2, position[1]);
+    //mesh of sphere facing camera
     sphere.lookAt(cam.position);
+    //adding sphere to the scene
     scene.add(sphere);
     }
 
@@ -234,11 +260,11 @@ function generateText(){
     
 }
 
-//help function to calculate Cosinus from degrees    
+//help function to calculate cosinus from degrees    
 function getCosFromDegrees(degrees) {
     return Math.cos(degrees / 180 * Math.PI);    
 }
-//help function to calculate Sinus from degrees   
+//help function to calculate sinus from degrees   
 function getSinFromDegrees(degrees) {
     return Math.sin(degrees / 180 * Math.PI);    
 }
