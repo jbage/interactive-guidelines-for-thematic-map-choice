@@ -1,47 +1,70 @@
 {
   "graph": {
 	"id": "algorithm-auriol",
-    "nodes": {
-    "1": {
+    "nodes": [
+    {
+      "id":"1",
 	    "name":"Algorithm Thematic Map Types",
 	    "type":"root"},
-    "2": {
+    {
+      "id":"2",
 	    "name":"Polygon",
 	    "type":"node"}, 
-	  "3": {
+	  {
+      "id":"3",
 	    "name":"Point",
 	    "type":"node"},
-	  "4": {
+	  {
+      "id":"4",
 	    "name":"Nominal",
 	    "type":"node"},
-	  "5": {
+	  {
+      "id":"5",
 	    "name":"Ratio",
 	    "type":"node"},
-	  "6": {
+	  {
+      "id":"6",
 	    "name":"Nominal",
 	    "type":"node"},
-	  "7": {
+	  {
+      "id":"7",
 	    "name":"Ratio",
 	    "type":"node"},
-	  "8": {
+	  {
+      "id":"8",
 	    "name":"Interval",
 	    "type":"node"},
-	  "9": {
+	  {
+      "id":"9",
 	    "name":"Choropleth",
-	    "type":"leaf"},
-	  "10": {
+	    "type":"leaf",
+      "path":"img/globe.jpg"},
+	  {
+      "id":"10",
 	    "name":"Pie Chart",
-	    "type":"leaf"},
-	  "11": {
+	    "type":"leaf",
+      "path":"img/globe.jpg"},
+	  {
+      "id":"11",
 	    "name":"Graduated Circle",
-	    "type":"leaf"},
-	  "12": {
+	    "type":"leaf",
+      "path":"img/globe.jpg"},
+	  {
+      "id":"12",
 	    "name":"Dot",
-	    "type":"leaf"},
-    "13":{
+	    "type":"leaf",
+      "path":"img/globe.jpg"},
+    {
+      "id":"13",
 	    "name":"Heat",
-	    "type":"leaf"}
-    },
+	    "type":"leaf",
+      "path":"img/globe.jpg"},
+    {
+      "id":"14",
+	    "name":"Heat",
+	    "type":"leaf",
+      "path":"img/globe.jpg"}
+    ],
     "edges": [
       {
         "source": "1",

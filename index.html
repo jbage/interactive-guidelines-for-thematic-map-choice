@@ -4,9 +4,18 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="node_modules/three/build/three.js"></script>
+    <script src="node_modules/three/examples/js/controls/PointerLockControls.js"></script>
+    
     <title>Interactive Guidelines for Thematic Maps</title>
   </head>
   <body>
+    <div id="selectDecisionTree">
+      <button id="example1Button">Erstes Beispiel</button>
+      <button id="example2Button">Zweites Beispiel</button>
+    </div>
+    <div id="selectionArea"></div>
+    <button id="lockButton">Steuerung starten</button>
     <div id="scene"></div>
     <script type="module" src="/main.js"></script>
   </body>
