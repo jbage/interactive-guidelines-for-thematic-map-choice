@@ -6,26 +6,21 @@ let nodeArray=[];
 
 //Initialize ThreeJS
 var scene = new THREE.Scene();
-
 var cam = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000);
-
 var renderer = new THREE.WebGLRenderer({antialias: true});
-
-scene.background = new THREE.Color(0xfafafa);
-
+scene.background = new THREE.Color(0x000000);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-
 //setting up position for camera
 cam.position.y = 0.5;
-
 document.getElementById("scene").appendChild(renderer.domElement);
 
-//adding directional light to the scene
-var directionalLight = new THREE.DirectionalLight({color: 0xFFFFFF, intensity: 100});
-directionalLight.position.set (0, 1, 0);
-directionalLight.castShadow = true;
-scene.add(directionalLight);
+/*adding spot ligth to the scene
+var spotLight = new THREE.SpotLight({color: 0xFFFFFF, intensity: 100});
+spotLight.position.set (0,0,0);
+spotLight.target = cam;
+spotLight.castShadow = true;
+scene.add(spotLight); */
 
 //adding ambient light to the scene
 var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -43,20 +38,24 @@ let clock = new THREE.Clock();
 
 //event listener for lock-button causing the mouse to be locked and used as camera control for the scene
 let lockButton = document.querySelector("#lockButton");
-lockButton.addEventListener('click',()=>{
+lockButton.addEventListener('click',()=>
+{
     controls.lock();
 });
 
-controls.addEventListener('lock',()=>{
+controls.addEventListener('lock',()=>
+{
     lockButton.innerHTML = "Press ESC to Unlock";
 })
-controls.addEventListener('unlock',()=>{
+controls.addEventListener('unlock',()=>
+{
     lockButton.innerHTML = "Click to Lock";
 })
 
 //event listener for example-button1 which will load the first example decision tree
 let example1Button = document.querySelector("#example1Button");
-example1Button.addEventListener('click',()=>{
+example1Button.addEventListener('click',()=>
+{
     createObjects("algorithm_auriol.json");
     //hide selection area of decision trees
     document.getElementById("selectDecisionTree").style.visibility ="hidden";
@@ -66,7 +65,8 @@ example1Button.addEventListener('click',()=>{
 
 //event listener for example-button2 which will load the second example decision tree
 let example2Button = document.querySelector("#example2Button");
-example2Button.addEventListener('click',()=>{
+example2Button.addEventListener('click',()=>
+{
     createObjects("common-thematic-map-types.json");
     //hide selection area of decision trees
     document.getElementById("selectDecisionTree").style.visibility ="hidden";
@@ -76,138 +76,160 @@ example2Button.addEventListener('click',()=>{
 });
 
 let keyboard = [];
-addEventListener('keydown',(e)=>{
+addEventListener('keydown',(e)=>
+{
     keyboard[e.key] = true;
 });
-addEventListener('keyup',(e)=>{
+addEventListener('keyup',(e)=>
+{
     keyboard[e.key] = false;
 });
 
-function processKeyboard(delta){
+function processKeyboard(delta)
+{
     let speed = 5;
     let actualSpeed = speed * delta;
-    if (keyboard['w']){
+    if (keyboard['w'])
+    {
         controls.moveForward(actualSpeed);
     }
-    if (keyboard['s']){
+    if (keyboard['s'])
+    {
         controls.moveForward(-actualSpeed);
     }
-    if (keyboard['a']){
+    if (keyboard['a'])
+    {
         controls.moveRight(-actualSpeed);
     }
-    if (keyboard['d']){
+    if (keyboard['d'])
+    {
         controls.moveRight(actualSpeed);
     }
 }
 //Camera Controls
 
 //load JSON
-function loadJSON(file,callback) {   
+function loadJSON(file,callback) 
+{   
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType('application/json');
     xobj.open('GET', file, true); 
-    xobj.onreadystatechange = function () {
-      if (xobj.readyState == 4 && xobj.status == '200') {
-      // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-        callback(xobj.responseText);
-       }
+    xobj.onreadystatechange = function () 
+    {
+        if (xobj.readyState == 4 && xobj.status == '200') 
+        {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            callback(xobj.responseText);
+        }
     };
     xobj.send(null);  
-  }
- //load JSON
+}
 
 //create spheres from leaf-nodes
-function createObjects(jsonFile){
-loadJSON(jsonFile, function(text){
-    let jsonData = JSON.parse(text);
-    let jsonNodes = jsonData.graph.nodes;
-    let i;
-    let highlight = true;
-    let radioButton1 = document.querySelectorAll('input[name="positioning"]');
-    let radioButton2 = document.querySelectorAll('input[name="object"]');
-    let selectedSize;
-    for (const radioButton of radioButton1) {
-        if (radioButton.checked) {
-            selectedSize = radioButton.value;
-        }
-    }
-    let selectedObject;
-    for (const radioButton of radioButton2) {
-        if (radioButton.checked) {
-            selectedObject = radioButton.value;
-        }
-    }
-
-    //extracting leaf-nodes into leafArray
-    for (i = 0; i < jsonNodes.length; i++)
+function createObjects(jsonFile)
+{
+    loadJSON(jsonFile, function(text)
     {
-        if (jsonNodes[i].type == "leaf")
+        let jsonData = JSON.parse(text);
+        let jsonNodes = jsonData.graph.nodes;
+        let i;
+        let highlight = true;
+        let radioButton1 = document.querySelectorAll('input[name="positioning"]');
+        let radioButton2 = document.querySelectorAll('input[name="object"]');
+        let selectedSize;
+        for (const radioButton of radioButton1) 
         {
-        leafArray.push(jsonNodes[i]);
-        }
-    }
-    //if the user chooses to arrange objects in a straight way
-    if (selectedSize == "straight"){
-        //defining positions of objects
-        //startPoint variable to define where the positioning of objects starts. It is dependant of the qunatity of objects
-        let startPoint = leafArray.length * 3;
-        //variable to define the distance between the objects. This is also dependant of the quantity of objects
-        let positionHelper = startPoint * 2 / (leafArray.length - 1)
-        //creating spheres from leafArray
-        for(i = 0; i < leafArray.length; i++){
-            let positionX = i * positionHelper - startPoint;
-            let positionZ = -startPoint*2;
-            let name = leafArray[i].name;
-            if(selectedObject == "sphere"){
-                generateSphere([positionX,positionZ],leafArray[i].im-path, highlight, name);
-            }
-            else{
-                generateBox([positionX,positionZ],leafArray[i].path, highlight, name);
+            if (radioButton.checked) {
+                selectedSize = radioButton.value;
             }
         }
-    }
-    //if the user chooses to arrange objects in a circular way
-    if (selectedSize == "circular"){
-        //defining positions of objects
-        //variable to define the distance between objects. Since it is a circular positioning it is defined in degrees
-        let positionHelper = 90/(leafArray.length-1);
-        //variable to define the distance of the objects to the camera. Dependant to qunaitity of objects to ensure that the space between objects stays large enough and the overview is secured
-        let radius = leafArray.length * 8;
-        //startpoint also in degrees. Starting with 225 since the coordinates will be calculated from the radius and the counterclockwise angle from the positive x axis
-        let startPoint = 225;
-        for(i = 0; i < leafArray.length; i++){
-            let positionX = radius * getCosFromDegrees(startPoint + (i * positionHelper));
-            let positionZ = radius * getSinFromDegrees(startPoint + (i * positionHelper));
-            let name = leafArray[i].name;
-            if(selectedObject == "sphere"){
-                generateSphere([positionX,positionZ],leafArray[i].path, highlight, name);
-            }
-            else{
-                generateBox([positionX,positionZ],leafArray[i].path, highlight, name);
+        let selectedObject;
+        for (const radioButton of radioButton2) 
+        {
+            if (radioButton.checked) {
+                selectedObject = radioButton.value;
             }
         }
-    }
-});
+        //extracting leaf-nodes into leafArray
+        for (i = 0; i < jsonNodes.length; i++)
+        {
+            //only choose the leaves
+            if (jsonNodes[i].type == "leaf")
+            {
+            //add all leaves to leafArray
+            leafArray.push(jsonNodes[i]);
+            }
+        }
+        //if the user chooses to arrange objects in a straight way
+        if (selectedSize == "straight") 
+        {
+            //startPoint variable to define where the positioning of objects starts. It is dependant of the qunatity of objects
+            let startPoint = leafArray.length * 3;
+            //variable to define the distance between the objects. This is also dependant of the quantity of objects
+            let positionHelper = startPoint * 2 / (leafArray.length - 1)
+            //loop setting positions for each leaf and running function to create the chosen object
+            for(i = 0; i < leafArray.length; i++)
+            {
+                let positionX = i * positionHelper - startPoint;
+                let positionZ = -startPoint*2;
+                let name = leafArray[i].name;
+                if(selectedObject == "sphere")
+                {
+                    generateSphere([positionX,positionZ],leafArray[i].imgpath, highlight, name);
+                }
+                else
+                {
+                    generateBox([positionX,positionZ],leafArray[i].imgpath, highlight, name);
+                }
+            }
+        }
+        //if the user chooses to arrange objects in a circular way
+        if (selectedSize == "circular")
+        {
+            //defining positions of objects
+            //variable to define the distance between objects. Since it is a circular positioning it is defined in degrees
+            let positionHelper = 90/(leafArray.length-1);
+            //variable to define the distance of the objects to the camera. Dependant to qunaitity of objects to ensure that the space between objects stays large enough and the overview is secured
+            let radius = leafArray.length * 8;
+            //startpoint also in degrees. Starting with 225 since the coordinates will be calculated from the radius and the counterclockwise angle from the positive x axis
+            let startPoint = 225;
+            //loop setting positions for each leaf and running function to create the chosen object
+            for(i = 0; i < leafArray.length; i++)
+            {
+                let positionX = radius * getCosFromDegrees(startPoint + (i * positionHelper));
+                let positionZ = radius * getSinFromDegrees(startPoint + (i * positionHelper));
+                let name = leafArray[i].name;
+                if(selectedObject == "sphere")
+                {
+                    generateSphere([positionX,positionZ],leafArray[i].imgpath, highlight, name);
+                }
+                else
+                {
+                generateBox([positionX,positionZ],leafArray[i].imgpath, highlight, name);
+                }
+            }
+        }
+    });
 }
-//create spheres from leaf-nodes
 
 //extract nodes into array
-function createSelectionArea(jsonFile){
-loadJSON(jsonFile, function(text){
-    let jsonData = JSON.parse(text);
-    let jsonNodes = jsonData.graph.nodes;
-    let i;
-    for (i = 0; i<jsonNodes.length; i++)
+function createSelectionArea(jsonFile)
+{
+    loadJSON(jsonFile, function(text)
     {
-        if (jsonNodes[i].type == "node")
+        let jsonData = JSON.parse(text);
+        let jsonNodes = jsonData.graph.nodes;
+        let i;
+        for (i = 0; i<jsonNodes.length; i++)
         {
-        nodeArray.push(jsonNodes[i]);
+            if (jsonNodes[i].type == "node")
+            {
+                nodeArray.push(jsonNodes[i]);
+            }
         }
-    }
-    console.log(nodeArray);
-});
+        console.log(nodeArray);
+    });
 }
-//extract nodes into array
 
 //generate Box
 /**
@@ -215,13 +237,17 @@ loadJSON(jsonFile, function(text){
  * @param {Array} position Array containing the x- and z-coordinate of the box 
  * @param {String} picture path of the image-data which will be used as texture for the box
  * @param {boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
+ * @param {String} name name of the object which will be used to create text object above the box
  */
-function generateBox(position, picture, highlight, name) {
+function generateBox(position, picture, highlight, name) 
+{
     let value;
-    if (highlight){
+    if (highlight)
+    {
         value = 2;
     }
-    else{
+    else
+    {
         value = 1;
     }
     //creating box with texture, geometry and material
@@ -235,23 +261,26 @@ function generateBox(position, picture, highlight, name) {
     //box.lookAt(cam.position);
     //adding box to the scene
     scene.add(box);
-    generateText(name, position, value);
+    generateText(name, position, highlight);
 }
-//generate Box
 
 //generate Sphere
 /**
  * Creates a sphere and adds it to the scene
  * @param {Array} position Array containing the x- and z-coordinate of the box 
  * @param {String} picture path of the image-data which will be used as texture for the sphere
- * @param {boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
+ * @param {Boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
+ * @param {String} name name of the object which will be used to create text object above the sphere
  */
-function generateSphere(position, picture, highlight, name){
+function generateSphere(position, picture, highlight, name)
+{
     let value;
-    if (highlight){
+    if (highlight)
+    {
         value = 2;
     }
-    else{
+    else
+    {
         value = 1;
     }
     //creating sphere with texture, geometry and material
@@ -265,46 +294,84 @@ function generateSphere(position, picture, highlight, name){
     sphere.lookAt(cam.position);
     //adding sphere to the scene
     scene.add(sphere);
-    generateText(name, position, value);
+    //running generateText function with name, coordinates and value(to check if object is highlighted)
+    generateText(name, position, highlight);
     }
 
-function generateText(name,position,value){
+
+//generate Text
+/**
+ * Creates a 3d text geometry and adds it to the scene
+ * @param {String} name String containing the text which will be written
+ * @param {Array} position Array containing the x- and z-coordinate of the text geometry (position is pointing to starting point of text so the beginning of the first letter in our case)
+ * @param {Boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
+ */
+function generateText(name,position,highlight)
+{
+    //loader to load the right font
     let loader = new THREE.FontLoader();
-    let nameString = String(name);
+    //variable for highlighting
+    let value;
+    //if object is highlighted the value is 2, else 1
+    if (highlight)
+    {
+        value = 2
+    }
+    else
+    {
+        value = 1;
+    }
+    //loading the font and creating the text geometry
     loader.load('node_modules/three/examples/fonts/droid/droid_sans_bold.typeface.json', function (font){
-        let textGeometry = new THREE.TextGeometry(nameString,{
+        let textGeometry = new THREE.TextGeometry(name,
+        {
             font: font,
             size: 0.5,
             height: 0.1
-    });
-    let textMesh = new THREE.Mesh(textGeometry, [
-        new THREE.MeshPhongMaterial({color: 0xad4000}), 
-        new THREE.MeshPhongMaterial({color: 0x5c2301})]);
-    //creating a bounding box of the text to measure the size (for positioning later)
-    let boundingBox = new THREE.Box3().setFromObject(textMesh);
-    //correcting the position of text so it is placed in the middle of the object (x-wise) and not starting there
-    let correctedPosition = position[0]- (textMesh.geometry.boundingBox.max.x - textMesh.geometry.boundingBox.min.x)/2;
-    textMesh.position.set(correctedPosition,value*2,position[1]);
-    //textMesh.lookAt(cam.position);
-    scene.add(textMesh);
-    }
-)
+        });
+        //creating mesh for text and adding materials (colors) to text
+        let textMesh = new THREE.Mesh(textGeometry, [
+            new THREE.MeshPhongMaterial({color: 0xFFFFFF}), 
+            new THREE.MeshPhongMaterial({color: 0xAAAAAA})]);
+        //creating a bounding box of the text to measure the size (for positioning later)
+        let boundingBox = new THREE.Box3().setFromObject(textMesh);
+        //correcting the position of text so it is placed in the middle of the object (x-wise) and not starting there
+        let correctedPosition = position[0]- (textMesh.geometry.boundingBox.max.x - textMesh.geometry.boundingBox.min.x)/2;
+        //setting position of textmesh with corrected position as x-value
+        textMesh.position.set(correctedPosition,value*2,position[1]);
+        //textMesh.lookAt(cam.position);
+        scene.add(textMesh);
+    })
 }
 
-//help function to calculate cosinus from degrees    
-function getCosFromDegrees(degrees) {
+/**
+ * calculates cosine from degrees
+ * @param {}degrees degrees of angle for which cosine shall be calculated
+ *
+ * @returns cosine of an agle with the input degrees
+ */   
+function getCosFromDegrees(degrees) 
+{
     return Math.cos(degrees / 180 * Math.PI);    
 }
-//help function to calculate sinus from degrees   
-function getSinFromDegrees(degrees) {
+
+/**
+ * calculates sine from degrees
+ * @param {}degrees degrees of angle for which sine shall be calculated
+ *
+ * @returns sine of an agle with the input degrees
+ */   
+function getSinFromDegrees(degrees) 
+{
     return Math.sin(degrees / 180 * Math.PI);    
 }
 
 //render function
-function drawScene() {
-renderer.render(scene, cam);
-let delta = clock.getDelta();
-processKeyboard(delta);
-requestAnimationFrame(drawScene);
+function drawScene() 
+{
+    renderer.render(scene, cam);
+    let delta = clock.getDelta();
+    processKeyboard(delta);
+    requestAnimationFrame(drawScene);
 }
 drawScene();
