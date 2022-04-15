@@ -1,0 +1,136 @@
+{
+    "graph": {
+      "id": "common-thematic-map-types",
+      "directed": "true",
+      "nodes": [
+      {
+        "id":"1",
+          "name":"Data Type",
+          "type":"parameter"},
+      {
+        "id":"2",
+          "name":"Qualitative",
+          "type":"node"}, 
+        {
+        "id":"3",
+          "name":"Quantitative",
+          "type":"node"},
+        {
+        "id":"4",
+          "name":"Abrupt",
+          "type":"node"},
+        {
+        "id":"5",
+          "name":"Smooth",
+          "type":"node"},
+        {
+        "id":"6",
+          "name":"Continous",
+          "type":"node"},
+        {
+        "id":"7",
+          "name":"Discrete",
+          "type":"node"},
+        {
+        "id":"8",
+          "name":"Continous",
+          "type":"node"},
+        {
+        "id":"9",
+          "name":"Discrete",
+          "type":"node"},
+        {
+        "id":"10",
+          "name":"Nominal",
+          "type":"leaf",
+        "im-path":"img/globe.jpg"},
+        {
+        "id":"11",
+          "name":"Choropleth",
+          "type":"leaf",
+        "im-path":"img/globe.jpg"},
+        {
+        "id":"12",
+          "name":"Proportional Symbol",
+          "type":"leaf",
+        "im-path":"img/globe.jpg"},
+      {
+        "id":"13",
+          "name":"Isoline",
+          "type":"leaf",
+        "im-path":"img/kruse.png"},
+        {
+        "id":"14",
+          "name":"Dot Density",
+          "type":"leaf",
+        "im-path":"img/globe.jpg"}
+      ],
+      "edges": [
+        {
+          "source": "1",
+          "target": "2",
+          "type": "superclass"
+        },
+        {
+          "source": "1",
+          "target": "3",
+          "type": "superclass"
+        },
+        {
+          "source": "2",
+          "target": "10",
+          "type": "meaningful"
+        },
+        {
+          "source": "3",
+          "target": "4",
+          "type": "superclass"
+        },
+        {
+          "source": "3",
+          "target": "5",
+          "type": "superclass"
+        },
+        {
+          "source": "4",
+          "target": "6",
+          "type": "superclass"
+        },
+        {
+          "source": "4",
+          "target": "7",
+          "type": "superclass"
+        },
+        {
+          "source": "5",
+          "target": "8",
+          "type": "superclass"
+        },
+        {
+          "source": "5",
+          "target": "9",
+          "type": "superclass"
+        },	 
+        {
+          "source": "6",
+          "target": "11",
+          "type": "meaningful"
+        },
+        {
+          "source": "7",
+          "target": "12",
+          "type": "meaningful"
+        },
+        {
+          "source": "8",
+          "target": "13",
+          "type": "meaningful"
+        },
+        {
+          "source": "9",
+          "target": "14",
+          "type": "meaningful"
+        }	  
+      ]
+    }
+  }

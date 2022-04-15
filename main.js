@@ -1,3 +1,4 @@
+
 //Global variables
 let leafArray=[];
 let nodeArray=[]; 
@@ -6,7 +7,7 @@ let nodeArray=[];
 //Initialize ThreeJS
 var scene = new THREE.Scene();
 
-var cam = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000);
+var cam = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000);
 
 var renderer = new THREE.WebGLRenderer({antialias: true});
 
@@ -45,6 +46,13 @@ let lockButton = document.querySelector("#lockButton");
 lockButton.addEventListener('click',()=>{
     controls.lock();
 });
+
+controls.addEventListener('lock',()=>{
+    lockButton.innerHTML = "Press ESC to Unlock";
+})
+controls.addEventListener('unlock',()=>{
+    lockButton.innerHTML = "Click to Lock";
+})
 
 //event listener for example-button1 which will load the first example decision tree
 let example1Button = document.querySelector("#example1Button");
@@ -144,16 +152,17 @@ loadJSON(jsonFile, function(text){
         //startPoint variable to define where the positioning of objects starts. It is dependant of the qunatity of objects
         let startPoint = leafArray.length * 3;
         //variable to define the distance between the objects. This is also dependant of the quantity of objects
-        let positionHelper = leafArray.length * 6 / (leafArray.length - 1)
+        let positionHelper = startPoint * 2 / (leafArray.length - 1)
         //creating spheres from leafArray
         for(i = 0; i < leafArray.length; i++){
             let positionX = i * positionHelper - startPoint;
-            let positionZ = -startPoint;
+            let positionZ = -startPoint*2;
+            let name = leafArray[i].name;
             if(selectedObject == "sphere"){
-                generateSphere([positionX,positionZ],leafArray[i].path, highlight);
+                generateSphere([positionX,positionZ],leafArray[i].im-path, highlight, name);
             }
             else{
-                generateBox([positionX,positionZ],leafArray[i].path, highlight);
+                generateBox([positionX,positionZ],leafArray[i].path, highlight, name);
             }
         }
     }
@@ -163,17 +172,18 @@ loadJSON(jsonFile, function(text){
         //variable to define the distance between objects. Since it is a circular positioning it is defined in degrees
         let positionHelper = 90/(leafArray.length-1);
         //variable to define the distance of the objects to the camera. Dependant to qunaitity of objects to ensure that the space between objects stays large enough and the overview is secured
-        let radius = leafArray.length * 3;
+        let radius = leafArray.length * 8;
         //startpoint also in degrees. Starting with 225 since the coordinates will be calculated from the radius and the counterclockwise angle from the positive x axis
         let startPoint = 225;
         for(i = 0; i < leafArray.length; i++){
             let positionX = radius * getCosFromDegrees(startPoint + (i * positionHelper));
             let positionZ = radius * getSinFromDegrees(startPoint + (i * positionHelper));
+            let name = leafArray[i].name;
             if(selectedObject == "sphere"){
-                generateSphere([positionX,positionZ],leafArray[i].path, highlight);
+                generateSphere([positionX,positionZ],leafArray[i].path, highlight, name);
             }
             else{
-                generateBox([positionX,positionZ],leafArray[i].path, highlight);
+                generateBox([positionX,positionZ],leafArray[i].path, highlight, name);
             }
         }
     }
@@ -206,7 +216,7 @@ loadJSON(jsonFile, function(text){
  * @param {String} picture path of the image-data which will be used as texture for the box
  * @param {boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
  */
-function generateBox(position, picture, highlight) {
+function generateBox(position, picture, highlight, name) {
     let value;
     if (highlight){
         value = 2;
@@ -222,9 +232,10 @@ function generateBox(position, picture, highlight) {
     //setting position of the box
     box.position.set(position[0], value/2, position[1]);
     //facing the camera
-    box.lookAt(cam.position);
+    //box.lookAt(cam.position);
     //adding box to the scene
     scene.add(box);
+    generateText(name, position, value);
 }
 //generate Box
 
@@ -235,7 +246,7 @@ function generateBox(position, picture, highlight) {
  * @param {String} picture path of the image-data which will be used as texture for the sphere
  * @param {boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
  */
-function generateSphere(position, picture, highlight){
+function generateSphere(position, picture, highlight, name){
     let value;
     if (highlight){
         value = 2;
@@ -254,10 +265,30 @@ function generateSphere(position, picture, highlight){
     sphere.lookAt(cam.position);
     //adding sphere to the scene
     scene.add(sphere);
+    generateText(name, position, value);
     }
 
-function generateText(){
-    
+function generateText(name,position,value){
+    let loader = new THREE.FontLoader();
+    let nameString = String(name);
+    loader.load('node_modules/three/examples/fonts/droid/droid_sans_bold.typeface.json', function (font){
+        let textGeometry = new THREE.TextGeometry(nameString,{
+            font: font,
+            size: 0.5,
+            height: 0.1
+    });
+    let textMesh = new THREE.Mesh(textGeometry, [
+        new THREE.MeshPhongMaterial({color: 0xad4000}), 
+        new THREE.MeshPhongMaterial({color: 0x5c2301})]);
+    //creating a bounding box of the text to measure the size (for positioning later)
+    let boundingBox = new THREE.Box3().setFromObject(textMesh);
+    //correcting the position of text so it is placed in the middle of the object (x-wise) and not starting there
+    let correctedPosition = position[0]- (textMesh.geometry.boundingBox.max.x - textMesh.geometry.boundingBox.min.x)/2;
+    textMesh.position.set(correctedPosition,value*2,position[1]);
+    //textMesh.lookAt(cam.position);
+    scene.add(textMesh);
+    }
+)
 }
 
 //help function to calculate cosinus from degrees    

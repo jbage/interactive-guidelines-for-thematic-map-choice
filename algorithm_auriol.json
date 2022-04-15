@@ -38,32 +38,32 @@
       "id":"9",
 	    "name":"Choropleth",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "im-path":"img/globe.jpg"},
 	  {
       "id":"10",
 	    "name":"Pie Chart",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "im-path":"img/globe.jpg"},
 	  {
       "id":"11",
 	    "name":"Graduated Circle",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "im-path":"img/globe.jpg"},
 	  {
       "id":"12",
 	    "name":"Dot",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "im-path":"img/globe.jpg"},
     {
       "id":"13",
 	    "name":"Heat",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "im-path":"img/globe.jpg"},
     {
       "id":"14",
-	    "name":"Heat",
+	    "name":"Heat2forcheck",
 	    "type":"leaf",
-      "path":"img/globe.jpg"}
+      "im-path":"img/globe.jpg"}
     ],
     "edges": [
       {

@@ -42,27 +42,27 @@
       "id":"10",
 	    "name":"Nominal",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "im-path":"img/globe.jpg"},
 	  {
       "id":"11",
 	    "name":"Choropleth",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "im-path":"img/globe.jpg"},
 	  {
       "id":"12",
 	    "name":"Proportional Symbol",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "im-path":"img/globe.jpg"},
     {
       "id":"13",
 	    "name":"Isoline",
 	    "type":"leaf",
-      "path":"img/kruse.png"},
+      "im-path":"img/kruse.png"},
 	  {
       "id":"14",
 	    "name":"Dot Density",
 	    "type":"leaf",
-      "path":"img/globe.jpg"}
+      "im-path":"img/globe.jpg"}
     ],
     "edges": [
       {
