@@ -4,132 +4,144 @@
     "nodes": [
     {
       "id":"1",
-	    "name":"Algorithm Thematic Map Types",
-	    "type":"root"},
+	    "name":"Geography",
+	    "type":"parameter"},
     {
       "id":"2",
+	    "name":"Datatype",
+	    "type":"parameter"},
+    {  
+      "id":"3",
 	    "name":"Polygon",
 	    "type":"node"}, 
 	  {
-      "id":"3",
-	    "name":"Point",
-	    "type":"leaf"},
-	  {
       "id":"4",
-	    "name":"Nominal",
-	    "type":"leaf"},
+	    "name":"Point",
+	    "type":"node"},
 	  {
       "id":"5",
-	    "name":"Ratio",
-	    "type":"leaf"},
+	    "name":"Nominal",
+	    "type":"node"},
 	  {
       "id":"6",
-	    "name":"Nominal",
-	    "type":"leaf"},
+	    "name":"Ratio",
+	    "type":"node"},
 	  {
       "id":"7",
-	    "name":"Ratio",
-	    "type":"leaf"},
+	    "name":"Interval", 
+	    "type":"node"},
 	  {
       "id":"8",
-	    "name":"Interval",
-	    "type":"leaf"},
-	  {
-      "id":"9",
 	    "name":"Choropleth",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "imgpath":"img/globe.jpg"},
+	  {
+      "id":"9",
+	    "name":"Pie Chart",
+	    "type":"leaf",
+      "imgpath":"img/globe.jpg"},
 	  {
       "id":"10",
-	    "name":"Pie Chart",
-	    "type":"node",
-      "path":"img/globe.jpg"},
-	  {
-      "id":"11",
 	    "name":"Graduated Circle",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "imgpath":"img/globe.jpg"},
 	  {
-      "id":"12",
+      "id":"11",
 	    "name":"Dot",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
+      "imgpath":"img/globe.jpg"},
     {
-      "id":"13",
+      "id":"12",
 	    "name":"Heat",
 	    "type":"leaf",
-      "path":"img/globe.jpg"},
-    {
-      "id":"14",
-	    "name":"Heat",
-	    "type":"leaf",
-      "path":"img/globe.jpg"}
+      "imgpath":"img/globe.jpg"}
     ],
     "edges": [
       {
         "source": "1",
-        "target": "2"
+        "target": "3",
+        "type":"parameter"
       },
       {
         "source": "1",
-        "target": "3"
+        "target": "4",
+        "type":"parameter"
       },
       {
         "source": "2",
-        "target": "4"
+        "target": "5",
+        "type":"parameter"
       },
       {
         "source": "2",
-        "target": "5"
+        "target": "6",
+        "type":"parameter"
+      },
+      {
+        "source": "2",
+        "target": "7",
+        "type":"parameter"
       },
       {
         "source": "3",
-        "target": "6"
+        "target": "8",
+        "type":"meaningful"
       },
       {
         "source": "3",
-        "target": "7"
-      },
-      {
-        "source": "3",
-        "target": "8"
-      },
-      {
-        "source": "3",
-        "target": "13"
+        "target": "9",
+        "type":"meaningful"
       },
       {
         "source": "4",
-        "target": "9"
+        "target": "10",
+        "type":"meaningful"
+      },
+      {
+        "source": "4",
+        "target": "11",
+        "type":"meaningful"
       },	 
       {
-        "source": "5",
-        "target": "9"
+        "source": "4",
+        "target": "12",
+        "type":"meaningful"
       },
       {
         "source": "5",
-        "target": "10"
+        "target": "8",
+        "type":"meaningful"
+      },
+      {
+        "source": "5",
+        "target": "10",
+        "type":"meaningful"
+      },
+      {
+        "source": "5",
+        "target": "11",
+        "type":"meaningful"
       },
       {
         "source": "6",
-        "target": "11"
+        "target": "8",
+        "type":"meaningful"
       },
       {
         "source": "6",
-        "target": "12"
+        "target": "9",
+        "type":"meaningful"
       },
       {
-        "source": "7",
-        "target": "11"
+        "source": "6",
+        "target": "10",
+        "type":"meaningful"
       },
       {
-        "source": "7",
-        "target": "12"
-      },
-      {
-        "source": "8",
-        "target": "12"
-      }	 	  
+        "source": "6",
+        "target": "11",
+        "type":"meaningful"
+      } 
     ]
   }
 }

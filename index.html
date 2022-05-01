@@ -17,18 +17,20 @@
   <body>
     <div id="selectDecisionTree">
       <input class="form-check-input" type="radio" id="straight" name="positioning" value="straight" checked>
-        <label class="form-check-label" for="straight">Straight</label>
-        <input class="form-check-input" type="radio" id="circular" name="positioning" value="circular">
-        <label class="form-check-label" for="circular">Circular</label>
-        <input class="form-check-input" type="radio" id="sphere" name="object" value="sphere" checked>
-        <label class="form-check-label" for="straight">Sphere</label>
-        <input class="form-check-input" type="radio" id="box" name="object" value="box">
-        <label class="form-check-label" for="circular">Box</label>
+      <label class="form-check-label" for="straight">Straight</label>
+      <input class="form-check-input" type="radio" id="circular" name="positioning" value="circular">
+      <label class="form-check-label" for="circular">Circular</label>
+      <input class="form-check-input" type="radio" id="sphere" name="object" value="sphere" checked>
+      <label class="form-check-label" for="straight">Sphere</label>
+      <input class="form-check-input" type="radio" id="box" name="object" value="box">
+      <label class="form-check-label" for="circular">Box</label>
       <button type ="button" class="btn btn-primary" id="example1Button">Erstes Beispiel</button>
       <button type ="button" class="btn btn-primary" id="example2Button">Zweites Beispiel</button>
     </div>
-    <div id="selectionArea"></div>
-    <button type ="button" class="btn btn-primary" id="lockButton">Steuerung starten</button>
+    <div id="selectionArea">
+      <form id="selectionForm"></form>
+    </div>
+    <button type ="button" class="btn btn-light" id="lockButton">Steuerung starten</button>
     <div id="scene"></div>
     <script type="module" src="/main.js"></script>
   </body>

@@ -34,7 +34,7 @@ scene.add(gridHelper);
 
 //setting up the camera controls
 let controls = new THREE.PointerLockControls(cam, renderer.domElement);
-let clock = new THREE.Clock();
+let clock = new THREE.Clock(); 
 
 //event listener for lock-button causing the mouse to be locked and used as camera control for the scene
 let lockButton = document.querySelector("#lockButton");
@@ -56,7 +56,8 @@ controls.addEventListener('unlock',()=>
 let example1Button = document.querySelector("#example1Button");
 example1Button.addEventListener('click',()=>
 {
-    createObjects("algorithm_auriol.json");
+    createSelectionArea("algorithm_auriol_test.json");
+    createObjects("algorithm_auriol_test.json");
     //hide selection area of decision trees
     document.getElementById("selectDecisionTree").style.visibility ="hidden";
     //show button to lock controls
@@ -67,7 +68,8 @@ example1Button.addEventListener('click',()=>
 let example2Button = document.querySelector("#example2Button");
 example2Button.addEventListener('click',()=>
 {
-    createObjects("common-thematic-map-types.json");
+    createSelectionArea("ctmt.json");
+    createObjects("ctmt.json");
     //hide selection area of decision trees
     document.getElementById("selectDecisionTree").style.visibility ="hidden";
     //show button to lock controls
@@ -130,6 +132,7 @@ function createObjects(jsonFile)
 {
     loadJSON(jsonFile, function(text)
     {
+        let id;
         let jsonData = JSON.parse(text);
         let jsonNodes = jsonData.graph.nodes;
         let i;
@@ -166,20 +169,21 @@ function createObjects(jsonFile)
             //startPoint variable to define where the positioning of objects starts. It is dependant of the qunatity of objects
             let startPoint = leafArray.length * 3;
             //variable to define the distance between the objects. This is also dependant of the quantity of objects
-            let positionHelper = startPoint * 2 / (leafArray.length - 1)
+            let positioncurrentId = startPoint * 2 / (leafArray.length - 1)
             //loop setting positions for each leaf and running function to create the chosen object
             for(i = 0; i < leafArray.length; i++)
             {
-                let positionX = i * positionHelper - startPoint;
+                let positionX = i * positioncurrentId - startPoint;
                 let positionZ = -startPoint*2;
                 let name = leafArray[i].name;
+                id = leafArray[i].id;
                 if(selectedObject == "sphere")
                 {
-                    generateSphere([positionX,positionZ],leafArray[i].imgpath, highlight, name);
+                    generateSphere([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
                 }
                 else
                 {
-                    generateBox([positionX,positionZ],leafArray[i].imgpath, highlight, name);
+                    generateBox([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
                 }
             }
         }
@@ -188,7 +192,7 @@ function createObjects(jsonFile)
         {
             //defining positions of objects
             //variable to define the distance between objects. Since it is a circular positioning it is defined in degrees
-            let positionHelper = 90/(leafArray.length-1);
+            let positioncurrentId = 90/(leafArray.length-1);
             //variable to define the distance of the objects to the camera. Dependant to qunaitity of objects to ensure that the space between objects stays large enough and the overview is secured
             let radius = leafArray.length * 8;
             //startpoint also in degrees. Starting with 225 since the coordinates will be calculated from the radius and the counterclockwise angle from the positive x axis
@@ -196,16 +200,17 @@ function createObjects(jsonFile)
             //loop setting positions for each leaf and running function to create the chosen object
             for(i = 0; i < leafArray.length; i++)
             {
-                let positionX = radius * getCosFromDegrees(startPoint + (i * positionHelper));
-                let positionZ = radius * getSinFromDegrees(startPoint + (i * positionHelper));
+                let positionX = radius * getCosFromDegrees(startPoint + (i * positioncurrentId));
+                let positionZ = radius * getSinFromDegrees(startPoint + (i * positioncurrentId));
                 let name = leafArray[i].name;
+                id = leafArray[i].id;
                 if(selectedObject == "sphere")
                 {
-                    generateSphere([positionX,positionZ],leafArray[i].imgpath, highlight, name);
+                    generateSphere([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
                 }
                 else
                 {
-                generateBox([positionX,positionZ],leafArray[i].imgpath, highlight, name);
+                generateBox([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
                 }
             }
         }
@@ -219,15 +224,96 @@ function createSelectionArea(jsonFile)
     {
         let jsonData = JSON.parse(text);
         let jsonNodes = jsonData.graph.nodes;
+        let jsonEdges = jsonData.graph.edges;
         let i;
+        //variable to shorten the code | used as the id of the current selected object in the NodeArray
+        let currentId;
+        let counterParagraph;
+        console.log(jsonEdges);
+        document.getElementById("selectionArea").style.display ="block";
         for (i = 0; i<jsonNodes.length; i++)
         {
-            if (jsonNodes[i].type == "node")
+            if (jsonNodes[i].type == "node" || jsonNodes[i].type == "parameter")
             {
                 nodeArray.push(jsonNodes[i]);
             }
         }
         console.log(nodeArray);
+        //For-Schleife, welche alle Parameter und Nodes durchläuft
+        for(i = 0; i < nodeArray.length; i++)
+        {
+            //falls das Objekt ein Parameter ist
+            if(nodeArray[i].type == "parameter")
+            {
+                currentId = nodeArray[i].id;
+                let j; 
+                let parameter = document.createElement("div");
+                parameter.id = "div"+currentId;
+                let headline = document.createElement("h3");
+                headline.id = nodeArray[i].name;
+                headline.innerHTML = nodeArray[i].name;
+                parameter.appendChild(headline);
+                document.getElementById("selectionForm").appendChild(parameter);
+                for(j = 0; j < jsonEdges.length; j++)
+                {
+                    if(jsonEdges[j].source == currentId && jsonEdges[j].type == "parameter")
+                    {
+                        let radiobutton = document.createElement("input");
+                        radiobutton.type = "radio";
+                        radiobutton.id = jsonEdges[j].target;
+                        radiobutton.name = jsonEdges[j].source;
+                        radiobutton.value = jsonEdges[j].target;
+                        radiobutton.classList.add("form-check-input");
+                        let label = document.createElement("label");
+                        label.for = jsonEdges[j].target;
+                        label.classList.add("form-check-label");
+                        let x = jsonEdges[j].target;
+                        label.innerHTML = nodeArray[x-1].name;
+                        document.getElementById("div"+currentId).appendChild(radiobutton);
+                        document.getElementById("div"+currentId).appendChild(label);
+
+                    }
+
+                }
+            }
+            //falls das Objekt ein normales Node ist
+            if(nodeArray[i].type == "node")
+            {
+                currentId = nodeArray[i].id;
+                let j;
+                for(j = 0; j < jsonEdges.length; j++)
+                {
+                    if(jsonEdges[j].source == currentId && jsonEdges[j].type == "superclass")
+                    {
+                        let radiobutton = document.createElement("input");
+                        radiobutton.type = "radio";
+                        radiobutton.id = jsonEdges[j].target;
+                        radiobutton.name = jsonEdges[j].source;
+                        radiobutton.value = jsonEdges[j].target;
+                        radiobutton.classList.add("form-check-input");
+                        let label = document.createElement("label");
+                        label.for = jsonEdges[j].target;
+                        label.classList.add("form-check-label");
+                        let x = jsonEdges[j].target;
+                        label.innerHTML = nodeArray[x-1].name;
+                        document.getElementById(currentId).parentNode.appendChild(radiobutton);
+                        document.getElementById(currentId).parentNode.appendChild(label);
+                        counterParagraph = currentId;
+                    }
+
+                }
+                //Paragraph after a group of Radiobuttons
+                console.log(document.getElementById(currentId).parentNode.lastChild.tagName);
+                if(document.getElementById(currentId).parentNode.lastChild.tagName != "BR")
+                {
+                    document.getElementById(currentId).parentNode.appendChild(document.createElement("br"));
+                }
+            }
+        }
+        let submitButton = document.createElement("button");
+        submitButton.classList.add("btn-primary");
+        submitButton.innerHTML = "Highlight suitable Map Choices";
+        document.getElementById("selectionForm").appendChild(submitButton);
     });
 }
 
@@ -238,8 +324,9 @@ function createSelectionArea(jsonFile)
  * @param {String} picture path of the image-data which will be used as texture for the box
  * @param {boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
  * @param {String} name name of the object which will be used to create text object above the box
+ * @param {Integer} id id of the object
  */
-function generateBox(position, picture, highlight, name) 
+function generateBox(position, picture, highlight, name, id) 
 {
     let value;
     if (highlight)
@@ -255,13 +342,15 @@ function generateBox(position, picture, highlight, name)
     let boxGeometry = new THREE.BoxGeometry(value*2, value*2, value*2);
     let boxMaterial = new THREE.MeshBasicMaterial({ map: boxTexture });
     let box = new THREE.Mesh(boxGeometry, boxMaterial);
+    box.name= name;
+    box.userData.id = id;
     //setting position of the box
     box.position.set(position[0], value/2, position[1]);
     //facing the camera
     //box.lookAt(cam.position);
     //adding box to the scene
     scene.add(box);
-    generateText(name, position, highlight);
+    generateText(name, position, highlight, id);
 }
 
 //generate Sphere
@@ -271,8 +360,9 @@ function generateBox(position, picture, highlight, name)
  * @param {String} picture path of the image-data which will be used as texture for the sphere
  * @param {Boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
  * @param {String} name name of the object which will be used to create text object above the sphere
+ * @param {Integer} id id of the object
  */
-function generateSphere(position, picture, highlight, name)
+function generateSphere(position, picture, highlight, name, id)
 {
     let value;
     if (highlight)
@@ -288,14 +378,17 @@ function generateSphere(position, picture, highlight, name)
     let sphereGeometry = new THREE.SphereGeometry(value);
     let sphereMaterial = new THREE.MeshBasicMaterial( {map: sphereTexture});
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphere.userData.id = id;
+    sphere.name = name;
     //setting position of sphere
     sphere.position.set(position[0], value/2, position[1]);
     //mesh of sphere facing camera
     sphere.lookAt(cam.position);
     //adding sphere to the scene
     scene.add(sphere);
+    console.log(sphere);
     //running generateText function with name, coordinates and value(to check if object is highlighted)
-    generateText(name, position, highlight);
+    generateText(name, position, highlight, id);
     }
 
 
@@ -305,8 +398,9 @@ function generateSphere(position, picture, highlight, name)
  * @param {String} name String containing the text which will be written
  * @param {Array} position Array containing the x- and z-coordinate of the text geometry (position is pointing to starting point of text so the beginning of the first letter in our case)
  * @param {Boolean} highlight indicates if the object fits to the users choices (from the decision tree) and thus will be highlighted
+ * @param {Integer} id id of the object
  */
-function generateText(name,position,highlight)
+function generateText(name,position,highlight, id)
 {
     //loader to load the right font
     let loader = new THREE.FontLoader();
@@ -339,6 +433,7 @@ function generateText(name,position,highlight)
         let correctedPosition = position[0]- (textMesh.geometry.boundingBox.max.x - textMesh.geometry.boundingBox.min.x)/2;
         //setting position of textmesh with corrected position as x-value
         textMesh.position.set(correctedPosition,value*2,position[1]);
+        textMesh.userData.id= id;
         //textMesh.lookAt(cam.position);
         scene.add(textMesh);
     })

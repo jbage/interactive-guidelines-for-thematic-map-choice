@@ -5,3 +5,14 @@
   position: absolute;
   display: none;
 }
+#selectionArea{
+  display: none;
+  background-color: black;
+  
+}
+h3 {
+  color: lightgrey;
+}
+label {
+  color: lightgrey;
+}
