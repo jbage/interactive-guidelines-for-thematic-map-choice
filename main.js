@@ -290,6 +290,10 @@ function createSelectionArea(jsonFile)
                         radiobutton.id = jsonEdges[j].target;
                         radiobutton.name = jsonEdges[j].source;
                         radiobutton.value = jsonEdges[j].target;
+                        radiobutton.onclick = function() 
+                        {
+                            toggleRadioButtons(this.name);
+                        }
                         radiobutton.classList.add("form-check-input");
                         let label = document.createElement("label");
                         label.for = jsonEdges[j].target;
@@ -439,6 +443,43 @@ function generateText(name,position,highlight, id)
     })
 }
 
+function toggleRadioButtons(parent)
+{
+    let i;
+    let elementList = document.getElementsByName(parent);
+    for (i = 0; i < elementList.length; i++)
+    {
+        if (elementList[i].checked == false)
+        {
+            let j = 0;
+            let innerElementlist = document.getElementsByName(elementList[i].id);
+            if (innerElementlist.length > 0)
+            {
+                for (j = 0; j < innerElementlist.length; j++)
+                {
+                    document.getElementById(innerElementlist[j].id).checked = false;
+                    document.getElementById(innerElementlist[j].id).disabled = true;
+                    toggleRadioButtons(innerElementlist[i].name);
+                }
+            }
+        }
+        else if(elementList[i].checked == true)
+        {
+            let j = 0;
+            let innerElementlist = document.getElementsByName(elementList[i].id);
+            if (innerElementlist.length > 0)
+            {
+                for (j = 0; j < innerElementlist.length; j++)
+                {
+                    document.getElementById(innerElementlist[j].id).disabled = false;
+                    toggleRadioButtons(innerElementlist[i].name);
+                }
+            }
+        }
+    console.log(elementList[i]);
+    }
+}
+
 /**
  * calculates cosine from degrees
  * @param {}degrees degrees of angle for which cosine shall be calculated
@@ -460,7 +501,6 @@ function getSinFromDegrees(degrees)
 {
     return Math.sin(degrees / 180 * Math.PI);    
 }
-
 //render function
 function drawScene() 
 {
