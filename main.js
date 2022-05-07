@@ -1,4 +1,5 @@
 
+
 //Global variables
 let leafArray=[];
 let nodeArray=[]; 
@@ -56,8 +57,8 @@ controls.addEventListener('unlock',()=>
 let example1Button = document.querySelector("#example1Button");
 example1Button.addEventListener('click',()=>
 {
-    createSelectionArea("algorithm_auriol_test.json");
-    createObjects("algorithm_auriol_test.json");
+    createSelectionArea("1_adaptive-maps-algorithm.json");
+    createLeaves("1_adaptive-maps-algorithm.json");
     //hide selection area of decision trees
     document.getElementById("selectDecisionTree").style.visibility ="hidden";
     //show button to lock controls
@@ -68,8 +69,8 @@ example1Button.addEventListener('click',()=>
 let example2Button = document.querySelector("#example2Button");
 example2Button.addEventListener('click',()=>
 {
-    createSelectionArea("ctmt.json");
-    createObjects("ctmt.json");
+    createSelectionArea("2_common-thematic-map-types.json");
+    createLeaves("2_common-thematic-map-types.json");
     //hide selection area of decision trees
     document.getElementById("selectDecisionTree").style.visibility ="hidden";
     //show button to lock controls
@@ -128,7 +129,7 @@ function loadJSON(file,callback)
 }
 
 //create spheres from leaf-nodes
-function createObjects(jsonFile)
+function createLeaves(jsonFile)
 {
     loadJSON(jsonFile, function(text)
     {
@@ -226,99 +227,116 @@ function createSelectionArea(jsonFile)
         let jsonNodes = jsonData.graph.nodes;
         let jsonEdges = jsonData.graph.edges;
         let i;
-        //variable to shorten the code | used as the id of the current selected object in the NodeArray
-        let currentId;
-        let counterParagraph;
-        console.log(jsonEdges);
-        document.getElementById("selectionArea").style.display ="block";
         for (i = 0; i<jsonNodes.length; i++)
         {
-            if (jsonNodes[i].type == "node" || jsonNodes[i].type == "parameter")
+            if (jsonNodes[i].type == "node" || jsonNodes[i].type == "root")
             {
                 nodeArray.push(jsonNodes[i]);
             }
         }
-        console.log(nodeArray);
-        //For-Schleife, welche alle Parameter und Nodes durchläuft
-        for(i = 0; i < nodeArray.length; i++)
+        /*for (i = 0; i<jsonNodes.length; i++)
         {
-            //falls das Objekt ein Parameter ist
-            if(nodeArray[i].type == "parameter")
+            if (jsonNodes[i].type == "leaf")
             {
-                currentId = nodeArray[i].id;
-                let j; 
-                let parameter = document.createElement("div");
-                parameter.id = "div"+currentId;
-                let headline = document.createElement("h3");
-                headline.id = nodeArray[i].name;
-                headline.innerHTML = nodeArray[i].name;
-                parameter.appendChild(headline);
-                document.getElementById("selectionForm").appendChild(parameter);
-                for(j = 0; j < jsonEdges.length; j++)
-                {
-                    if(jsonEdges[j].source == currentId && jsonEdges[j].type == "parameter")
-                    {
-                        let radiobutton = document.createElement("input");
-                        radiobutton.type = "radio";
-                        radiobutton.id = jsonEdges[j].target;
-                        radiobutton.name = jsonEdges[j].source;
-                        radiobutton.value = jsonEdges[j].target;
-                        radiobutton.classList.add("form-check-input");
-                        let label = document.createElement("label");
-                        label.for = jsonEdges[j].target;
-                        label.classList.add("form-check-label");
-                        let x = jsonEdges[j].target;
-                        label.innerHTML = nodeArray[x-1].name;
-                        document.getElementById("div"+currentId).appendChild(radiobutton);
-                        document.getElementById("div"+currentId).appendChild(label);
-
-                    }
-
-                }
+                leafArray.push(jsonNodes[i]);
             }
-            //falls das Objekt ein normales Node ist
-            if(nodeArray[i].type == "node")
-            {
-                currentId = nodeArray[i].id;
-                let j;
-                for(j = 0; j < jsonEdges.length; j++)
-                {
-                    if(jsonEdges[j].source == currentId && jsonEdges[j].type == "superclass")
-                    {
-                        let radiobutton = document.createElement("input");
-                        radiobutton.type = "radio";
-                        radiobutton.id = jsonEdges[j].target;
-                        radiobutton.name = jsonEdges[j].source;
-                        radiobutton.value = jsonEdges[j].target;
-                        radiobutton.onclick = function() 
-                        {
-                            toggleRadioButtons(this.name);
-                        }
-                        radiobutton.classList.add("form-check-input");
-                        let label = document.createElement("label");
-                        label.for = jsonEdges[j].target;
-                        label.classList.add("form-check-label");
-                        let x = jsonEdges[j].target;
-                        label.innerHTML = nodeArray[x-1].name;
-                        document.getElementById(currentId).parentNode.appendChild(radiobutton);
-                        document.getElementById(currentId).parentNode.appendChild(label);
-                        counterParagraph = currentId;
-                    }
+        }*/
+        parametersToSections(nodeArray, jsonEdges);
+        nodesToRadioButtons(nodeArray, jsonEdges);
+        //createLeaves(leafArray, jsonEdges);
+        document.getElementById("selectionArea").style.display ="block";
+    });
 
-                }
-                //Paragraph after a group of Radiobuttons
-                console.log(document.getElementById(currentId).parentNode.lastChild.tagName);
-                if(document.getElementById(currentId).parentNode.lastChild.tagName != "BR")
+}
+
+function parametersToSections(nodeArray, edgesArray)
+{
+    let currentId;
+    let i;
+    let j;
+    for(i = 0; i < nodeArray.length; i++)
+        {
+            currentId = nodeArray[i].id;
+            for(j = 0; j < edgesArray.length; j++)
+            {
+                if(edgesArray[j].target == nodeArray[i].id && edgesArray[j].type == "parameter")
                 {
-                    document.getElementById(currentId).parentNode.appendChild(document.createElement("br"));
+                    let parameter = document.createElement("div");
+                    parameter.id = currentId;
+                    let headline = document.createElement("h3");
+                    headline.id = nodeArray[i].name;
+                    headline.innerHTML = nodeArray[i].name;
+                    parameter.appendChild(headline);
+                    document.getElementById("selectionForm").appendChild(parameter);
                 }
             }
         }
-        let submitButton = document.createElement("button");
-        submitButton.classList.add("btn-primary");
-        submitButton.innerHTML = "Highlight suitable Map Choices";
-        document.getElementById("selectionForm").appendChild(submitButton);
-    });
+}
+//generate Box
+/**
+ * Converts the notes of the decision tree into radio buttons
+ * @param {Array} nodeArray Array containing all nodes from the decision tree (without leaves and root)
+ * @param {Array} edgesArray Array containing all edges from the decision tree
+ */
+function nodesToRadioButtons(nodeArray, edgesArray)
+{
+    //counter variables
+    let i;
+    let j;
+    //placeholder for the id of the current chosen object
+    let currentId;
+    //iterating through the nodeArray
+    for(i = 0; i < nodeArray.length; i++)
+        {
+            currentId = nodeArray[i].id;
+            //iterating through the edgesArray
+            for(j = 0; j < edgesArray.length; j++)
+            {
+                //if a superclass relation is targeting the node it has to be created as radiobutton
+                if(edgesArray[j].source == currentId && edgesArray[j].type == "superclass")
+                {
+                    //creating the radiobutton and adding it to the HTML
+                    let radiobutton = document.createElement("input");
+                    radiobutton.type = "radio";
+                    radiobutton.id = edgesArray[j].target;
+                    radiobutton.name = edgesArray[j].source;
+                    radiobutton.value = edgesArray[j].target;
+                    //add onclick-event to radiobuttons to receive current user choice
+                    radiobutton.onclick = function() 
+                    {
+                        changeRadioButtons(this.name);
+                    }
+                    radiobutton.classList.add("form-check-input");
+                    //adding a label for the radiobutton
+                    let label = document.createElement("label");
+                    label.for = edgesArray[j].target;
+                    label.classList.add("form-check-label");
+                    label.innerHTML = nodeArray[edgesArray[j].target].name;
+                    //check if there are any radiobuttons created yet
+                    if(document.getElementById(currentId).tagName == "DIV")
+                    {
+                        //no radiobuttons yet, thus we have to address the div itself
+                        document.getElementById(currentId).appendChild(radiobutton);
+                        document.getElementById(currentId).appendChild(label);
+                    }
+                    else
+                    {
+                        //already radiobuttons created before, thus we can find the right div via parent node of these
+                        radiobutton.disabled = true;
+                        document.getElementById(currentId).parentNode.appendChild(radiobutton);
+                        document.getElementById(currentId).parentNode.appendChild(label);
+                    }
+                }
+            }
+            //Line break after a group of Radiobuttons
+            //check if there was already a radio button created yet and no line break was created after the last radiobutton
+            if(document.getElementById(currentId) !== null && document.getElementById(currentId).parentNode.lastChild.tagName != "BR")
+            {
+                //create a line break
+                document.getElementById(currentId).parentNode.appendChild(document.createElement("br"));
+            }
+        }
+
 }
 
 //generate Box
@@ -434,7 +452,7 @@ function generateText(name,position,highlight, id)
         //creating a bounding box of the text to measure the size (for positioning later)
         let boundingBox = new THREE.Box3().setFromObject(textMesh);
         //correcting the position of text so it is placed in the middle of the object (x-wise) and not starting there
-        let correctedPosition = position[0]- (textMesh.geometry.boundingBox.max.x - textMesh.geometry.boundingBox.min.x)/2;
+        let correctedPosition = position[0] - (textMesh.geometry.boundingBox.max.x - textMesh.geometry.boundingBox.min.x)/2;
         //setting position of textmesh with corrected position as x-value
         textMesh.position.set(correctedPosition,value*2,position[1]);
         textMesh.userData.id= id;
@@ -443,7 +461,9 @@ function generateText(name,position,highlight, id)
     })
 }
 
-function toggleRadioButtons(parent)
+
+
+function changeRadioButtons (parent)
 {
     let i;
     let elementList = document.getElementsByName(parent);
@@ -451,34 +471,44 @@ function toggleRadioButtons(parent)
     {
         if (elementList[i].checked == false)
         {
-            let j = 0;
-            let innerElementlist = document.getElementsByName(elementList[i].id);
-            if (innerElementlist.length > 0)
-            {
-                for (j = 0; j < innerElementlist.length; j++)
-                {
-                    document.getElementById(innerElementlist[j].id).checked = false;
-                    document.getElementById(innerElementlist[j].id).disabled = true;
-                    toggleRadioButtons(innerElementlist[i].name);
-                }
-            }
+            let innerElementList = document.getElementsByName(elementList[i].id);
+            untoggleRadioButtons(innerElementList);
         }
         else if(elementList[i].checked == true)
         {
-            let j = 0;
-            let innerElementlist = document.getElementsByName(elementList[i].id);
-            if (innerElementlist.length > 0)
-            {
-                for (j = 0; j < innerElementlist.length; j++)
-                {
-                    document.getElementById(innerElementlist[j].id).disabled = false;
-                    toggleRadioButtons(innerElementlist[i].name);
-                }
-            }
+            let innerElementList = document.getElementsByName(elementList[i].id);
+            toggleRadioButtons(innerElementList);
         }
-    console.log(elementList[i]);
     }
 }
+
+function untoggleRadioButtons(elementList)
+{
+    let i;
+    if (elementList.length > 0)
+    {
+        for (i = 0; i < elementList.length; i++)
+        {
+            document.getElementById(elementList[i].id).checked = false;
+            document.getElementById(elementList[i].id).disabled = true;
+            let innerElementList = document.getElementsByName(elementList[i].id);
+            untoggleRadioButtons(innerElementList);
+        }
+    }
+}
+
+function toggleRadioButtons(elementList)
+{
+    let i;
+    if (elementList.length > 0)
+    {
+        for (i = 0; i < elementList.length; i++)
+        {
+            document.getElementById(elementList[i].id).disabled = false;
+        }
+    }
+}
+
 
 /**
  * calculates cosine from degrees

@@ -1,18 +1,24 @@
-#selectDecisionTree{
+#selectDecisionTree
+{
   position: absolute;
 }
-#lockButton{
+#lockButton
+{
   position: absolute;
   display: none;
 }
-#selectionArea{
+#selectionArea
+{
   display: none;
   background-color: black;
   
 }
-h3 {
+h3 
+{
   color: lightgrey;
 }
-label {
+label 
+{
   color: lightgrey;
+  margin-right: 50px;
 }

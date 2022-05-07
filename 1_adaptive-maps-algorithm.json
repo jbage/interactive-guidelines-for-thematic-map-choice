@@ -47,31 +47,31 @@
       {
         "id":"8",
         "name":"Choropleth",
-        "type":"node",
-        "imgpath":"img/globe.jpg"
+        "type":"leaf",
+        "imgpath":"img/choropleth.png"
       },
       {
         "id":"9",
         "name":"Pie Chart",
-        "type":"node",
+        "type":"leaf",
         "imgpath":"img/globe.jpg"
       },
       {
         "id":"10",
         "name":"Graduated Circle",
-        "type":"node",
+        "type":"leaf",
         "imgpath":"img/globe.jpg"
       },
       {
         "id":"11",
         "name":"Dot",
-        "type":"node",
-        "imgpath":"img/globe.jpg"
+        "type":"leaf",
+        "imgpath":"img/dot-density.png"
       },
       {
         "id":"12",
         "name":"Heat",
-        "type":"node",
+        "type":"leaf",
         "imgpath":"img/globe.jpg"
       }
     ],
@@ -115,47 +115,62 @@
       {
         "source": "3",
         "target": "8",
-        "type":"superclass"
+        "type":"meaningful"
       },
       {
         "source": "3",
         "target": "9",
-        "type":"superclass"
+        "type":"meaningful"
       },
       {
         "source": "4",
         "target": "10",
-        "type":"superclass"
+        "type":"meaningful"
       },
       {
         "source": "4",
+        "target": "11",
+        "type":"meaningful"
+      },	 
+      {
+        "source": "4",
         "target": "12",
-        "type":"superclass"
+        "type":"meaningful"
       },
       {
         "source": "5",
         "target": "8",
-        "type":"superclass"
+        "type":"meaningful"
       },
       {
         "source": "5",
         "target": "10",
-        "type":"superclass"
+        "type":"meaningful"
+      },
+      {
+        "source": "5",
+        "target": "11",
+        "type":"meaningful"
       },
       {
         "source": "6",
         "target": "8",
-        "type":"superclass"
+        "type":"meaningful"
       },
       {
         "source": "6",
         "target": "9",
-        "type":"superclass"
+        "type":"meaningful"
+      },
+      {
+        "source": "6",
+        "target": "10",
+        "type":"meaningful"
       },
       {
         "source": "6",
         "target": "11",
-        "type":"superclass"
+        "type":"meaningful"
       } 
     ]
   }
