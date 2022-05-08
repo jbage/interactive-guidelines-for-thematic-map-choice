@@ -2,7 +2,6 @@
 
 //Global variables
 let leafArray=[];
-let nodeArray=[]; 
 
 
 //Initialize ThreeJS
@@ -37,47 +36,6 @@ scene.add(gridHelper);
 let controls = new THREE.PointerLockControls(cam, renderer.domElement);
 let clock = new THREE.Clock(); 
 
-//event listener for lock-button causing the mouse to be locked and used as camera control for the scene
-let lockButton = document.querySelector("#lockButton");
-lockButton.addEventListener('click',()=>
-{
-    controls.lock();
-});
-
-controls.addEventListener('lock',()=>
-{
-    lockButton.innerHTML = "Press ESC to Unlock";
-})
-controls.addEventListener('unlock',()=>
-{
-    lockButton.innerHTML = "Click to Lock";
-})
-
-//event listener for example-button1 which will load the first example decision tree
-let example1Button = document.querySelector("#example1Button");
-example1Button.addEventListener('click',()=>
-{
-    createSelectionArea("1_adaptive-maps-algorithm.json");
-    createLeaves("1_adaptive-maps-algorithm.json");
-    //hide selection area of decision trees
-    document.getElementById("selectDecisionTree").style.visibility ="hidden";
-    //show button to lock controls
-    document.getElementById("lockButton").style.display="block";
-});
-
-//event listener for example-button2 which will load the second example decision tree
-let example2Button = document.querySelector("#example2Button");
-example2Button.addEventListener('click',()=>
-{
-    createSelectionArea("2_common-thematic-map-types.json");
-    createLeaves("2_common-thematic-map-types.json");
-    //hide selection area of decision trees
-    document.getElementById("selectDecisionTree").style.visibility ="hidden";
-    //show button to lock controls
-    document.getElementById("lockButton").style.display="block";
-
-});
-
 let keyboard = [];
 addEventListener('keydown',(e)=>
 {
@@ -111,6 +69,81 @@ function processKeyboard(delta)
 }
 //Camera Controls
 
+//event listener for lock-button causing the mouse to be locked and used as camera control for the scene
+let lockButton = document.querySelector("#lockButton");
+lockButton.addEventListener('click',()=>
+{
+    controls.lock();
+});
+
+controls.addEventListener('lock',()=>
+{
+    lockButton.innerHTML = "Press ESC to Unlock";
+})
+controls.addEventListener('unlock',()=>
+{
+    lockButton.innerHTML = "Click to Lock";
+})
+
+//event listener for example-button1 which will load the first example decision tree
+let example1Button = document.querySelector("#example1Button");
+example1Button.addEventListener('click',()=>
+{
+    initializeContent("1_adaptive-maps-algorithm.json");
+    //hide selection area of decision trees
+    document.getElementById("selectDecisionTree").style.visibility ="hidden";
+    //show button to lock controls
+    document.getElementById("lockButton").style.display="block";
+});
+
+//event listener for example-button2 which will load the second example decision tree
+let example2Button = document.querySelector("#example2Button");
+example2Button.addEventListener('click',()=>
+{
+    initializeContent("2_common-thematic-map-types.json")
+    //hide selection area of decision trees
+    document.getElementById("selectDecisionTree").style.visibility ="hidden";
+    //show button to lock controls
+    document.getElementById("lockButton").style.display="block";
+
+});
+
+
+/**
+ * Function to initialize loading of the chosen data from the JSON-file
+ * @param {String} fileLink Hyperlink containing location of the chosen JSON-file
+ */
+function initializeContent(fileLink)
+{
+    loadJSON(fileLink, function(text)
+    {
+        let jsonData = JSON.parse(text);
+        let jsonNodes = jsonData.graph.nodes;
+        let jsonEdges = jsonData.graph.edges;
+        let nodeArray = [];
+        let i;
+        for (i = 0; i<jsonNodes.length; i++)
+        {
+            if (jsonNodes[i].type == "node" || jsonNodes[i].type == "root")
+            {
+                nodeArray.push(jsonNodes[i]);
+            }
+        }
+        for (i = 0; i<jsonNodes.length; i++)
+        {
+            if (jsonNodes[i].type == "leaf")
+            {
+                leafArray.push(jsonNodes[i]);
+            }
+        }
+        createSelectionArea(nodeArray, jsonEdges);
+        leavesToObjects(leafArray, jsonEdges);
+        //leavesToObjects(fileLink);
+    });
+}
+
+
+
 //load JSON
 function loadJSON(file,callback) 
 {   
@@ -128,127 +161,26 @@ function loadJSON(file,callback)
     xobj.send(null);  
 }
 
-//create spheres from leaf-nodes
-function createLeaves(jsonFile)
+
+
+/**
+ * Function to initialize all functions to create the selection area
+ * @param {Array} nodeArray Array containing all nodes from the decision tree (without leaves and root)
+ * @param {Array} edgesArray Array containing all edges from the decision tree
+ */
+function createSelectionArea(nodeArray, edgesArray)
 {
-    loadJSON(jsonFile, function(text)
-    {
-        let id;
-        let jsonData = JSON.parse(text);
-        let jsonNodes = jsonData.graph.nodes;
-        let i;
-        let highlight = true;
-        let radioButton1 = document.querySelectorAll('input[name="positioning"]');
-        let radioButton2 = document.querySelectorAll('input[name="object"]');
-        let selectedSize;
-        for (const radioButton of radioButton1) 
-        {
-            if (radioButton.checked) {
-                selectedSize = radioButton.value;
-            }
-        }
-        let selectedObject;
-        for (const radioButton of radioButton2) 
-        {
-            if (radioButton.checked) {
-                selectedObject = radioButton.value;
-            }
-        }
-        //extracting leaf-nodes into leafArray
-        for (i = 0; i < jsonNodes.length; i++)
-        {
-            //only choose the leaves
-            if (jsonNodes[i].type == "leaf")
-            {
-            //add all leaves to leafArray
-            leafArray.push(jsonNodes[i]);
-            }
-        }
-        //if the user chooses to arrange objects in a straight way
-        if (selectedSize == "straight") 
-        {
-            //startPoint variable to define where the positioning of objects starts. It is dependant of the qunatity of objects
-            let startPoint = leafArray.length * 3;
-            //variable to define the distance between the objects. This is also dependant of the quantity of objects
-            let positioncurrentId = startPoint * 2 / (leafArray.length - 1)
-            //loop setting positions for each leaf and running function to create the chosen object
-            for(i = 0; i < leafArray.length; i++)
-            {
-                let positionX = i * positioncurrentId - startPoint;
-                let positionZ = -startPoint*2;
-                let name = leafArray[i].name;
-                id = leafArray[i].id;
-                if(selectedObject == "sphere")
-                {
-                    generateSphere([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
-                }
-                else
-                {
-                    generateBox([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
-                }
-            }
-        }
-        //if the user chooses to arrange objects in a circular way
-        if (selectedSize == "circular")
-        {
-            //defining positions of objects
-            //variable to define the distance between objects. Since it is a circular positioning it is defined in degrees
-            let positioncurrentId = 90/(leafArray.length-1);
-            //variable to define the distance of the objects to the camera. Dependant to qunaitity of objects to ensure that the space between objects stays large enough and the overview is secured
-            let radius = leafArray.length * 8;
-            //startpoint also in degrees. Starting with 225 since the coordinates will be calculated from the radius and the counterclockwise angle from the positive x axis
-            let startPoint = 225;
-            //loop setting positions for each leaf and running function to create the chosen object
-            for(i = 0; i < leafArray.length; i++)
-            {
-                let positionX = radius * getCosFromDegrees(startPoint + (i * positioncurrentId));
-                let positionZ = radius * getSinFromDegrees(startPoint + (i * positioncurrentId));
-                let name = leafArray[i].name;
-                id = leafArray[i].id;
-                if(selectedObject == "sphere")
-                {
-                    generateSphere([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
-                }
-                else
-                {
-                generateBox([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
-                }
-            }
-        }
-    });
+
+    parametersToSections(nodeArray, edgesArray);
+    nodesToRadioButtons(nodeArray, edgesArray);
+    document.getElementById("selectionArea").style.display ="block";
 }
 
-//extract nodes into array
-function createSelectionArea(jsonFile)
-{
-    loadJSON(jsonFile, function(text)
-    {
-        let jsonData = JSON.parse(text);
-        let jsonNodes = jsonData.graph.nodes;
-        let jsonEdges = jsonData.graph.edges;
-        let i;
-        for (i = 0; i<jsonNodes.length; i++)
-        {
-            if (jsonNodes[i].type == "node" || jsonNodes[i].type == "root")
-            {
-                nodeArray.push(jsonNodes[i]);
-            }
-        }
-        /*for (i = 0; i<jsonNodes.length; i++)
-        {
-            if (jsonNodes[i].type == "leaf")
-            {
-                leafArray.push(jsonNodes[i]);
-            }
-        }*/
-        parametersToSections(nodeArray, jsonEdges);
-        nodesToRadioButtons(nodeArray, jsonEdges);
-        //createLeaves(leafArray, jsonEdges);
-        document.getElementById("selectionArea").style.display ="block";
-    });
-
-}
-
+/**
+ * Converts the parameters (saved as nodes) of the decision tree into divs and headlines in the HTML document
+ * @param {Array} nodeArray Array containing all nodes from the decision tree (without leaves and root)
+ * @param {Array} edgesArray Array containing all edges from the decision tree
+ */
 function parametersToSections(nodeArray, edgesArray)
 {
     let currentId;
@@ -272,9 +204,9 @@ function parametersToSections(nodeArray, edgesArray)
             }
         }
 }
-//generate Box
+
 /**
- * Converts the notes of the decision tree into radio buttons
+ * Converts the nodes of the decision tree into radio buttons in the HTML document
  * @param {Array} nodeArray Array containing all nodes from the decision tree (without leaves and root)
  * @param {Array} edgesArray Array containing all edges from the decision tree
  */
@@ -301,7 +233,7 @@ function nodesToRadioButtons(nodeArray, edgesArray)
                     radiobutton.id = edgesArray[j].target;
                     radiobutton.name = edgesArray[j].source;
                     radiobutton.value = edgesArray[j].target;
-                    //add onclick-event to radiobuttons to receive current user choice
+                    //add onclick-event to radiobuttons to receive current user selection and react to it
                     radiobutton.onclick = function() 
                     {
                         changeRadioButtons(this.name);
@@ -310,6 +242,7 @@ function nodesToRadioButtons(nodeArray, edgesArray)
                     //adding a label for the radiobutton
                     let label = document.createElement("label");
                     label.for = edgesArray[j].target;
+                    label.id = "label"+edgesArray[j].target;
                     label.classList.add("form-check-label");
                     label.innerHTML = nodeArray[edgesArray[j].target].name;
                     //check if there are any radiobuttons created yet
@@ -334,6 +267,144 @@ function nodesToRadioButtons(nodeArray, edgesArray)
             {
                 //create a line break
                 document.getElementById(currentId).parentNode.appendChild(document.createElement("br"));
+            }
+        }
+
+}
+
+/**
+ * Checks for all radiobuttons in the group and triggers either the toggle or untoggle function for it
+ * @param {Integer} parent the name of the group (which is also the ID of the element it is appended to)
+ */
+ function changeRadioButtons (parent)
+ {
+     //counter variable
+     let i;
+     //receive all elements with this name (all radiobuttons in the group)
+     let elementList = document.getElementsByName(parent);
+     let innerElementList;
+     for (i = 0; i < elementList.length; i++)
+     {
+         //if the button is not checked, the untoggle-function is started with a list of the first group of radiobuttons depending on the one we just checked
+         if (elementList[i].checked == false)
+         {
+             innerElementList = document.getElementsByName(elementList[i].id);
+             untoggleRadioButtons(innerElementList);
+         }
+         //else the toggle-function is started with a list of the first group of radiobuttons depending on the one we just checked
+         else if(elementList[i].checked == true)
+         {
+             innerElementList = document.getElementsByName(elementList[i].id);
+             toggleRadioButtons(innerElementList);
+         }
+     }
+ }
+ 
+ /**
+  * Recursively disables and unchecks all radiobuttons in the current group and in all groups depending on that
+  * @param {Array} elementList list of the radiobuttons in the current group
+  */
+ function untoggleRadioButtons(elementList)
+ {
+     let i;
+     if (elementList.length > 0)
+     {
+         for (i = 0; i < elementList.length; i++)
+         {
+             document.getElementById(elementList[i].id).checked = false;
+             document.getElementById(elementList[i].id).disabled = true;
+             let innerElementList = document.getElementsByName(elementList[i].id);
+             untoggleRadioButtons(innerElementList);
+         }
+     }
+ }
+ 
+ /**
+  * Enables the radiobuttons in the current group
+  * @param {Array} elementList list of the radiobuttons in the current group
+  */
+ function toggleRadioButtons(elementList)
+ {
+     let i;
+     if (elementList.length > 0)
+     {
+         for (i = 0; i < elementList.length; i++)
+         {
+             document.getElementById(elementList[i].id).disabled = false;
+         }
+     }
+ }
+
+//create spheres from leaf-nodes
+function leavesToObjects(leafArray, edgesArray)
+{
+        let i;
+        let highlight = true;
+        let radioButton1 = document.querySelectorAll('input[name="positioning"]');
+        let radioButton2 = document.querySelectorAll('input[name="object"]');
+        let selectedSize;
+        for (const radioButton of radioButton1) 
+        {
+            if (radioButton.checked) {
+                selectedSize = radioButton.value;
+            }
+        }
+        let selectedObject;
+        for (const radioButton of radioButton2) 
+        {
+            if (radioButton.checked) {
+                selectedObject = radioButton.value;
+            }
+        }
+        //if the user chooses to arrange objects in a straight way
+        if (selectedSize == "straight") 
+        {
+            //startPoint variable to define where the positioning of objects starts. It is dependant of the qunatity of objects
+            let startPoint = leafArray.length * 3;
+            //variable to define the distance between the objects. This is also dependant of the quantity of objects
+            let positioncurrentId = startPoint * 2 / (leafArray.length - 1)
+            //loop setting positions for each leaf and running function to create the chosen object
+            for(i = 0; i < leafArray.length; i++)
+            {
+                let positionX = i * positioncurrentId - startPoint;
+                let positionZ = -startPoint*2;
+                let name = leafArray[i].name;
+                let id = leafArray[i].id;
+                if(selectedObject == "sphere")
+                {
+                    generateSphere([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
+                }
+                else
+                {
+                    generateBox([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
+                }
+            }
+        }
+        //if the user chooses to arrange objects in a circular way
+        if (selectedSize == "circular")
+        {
+            //defining positions of objects
+            //variable to define the distance between objects. Since it is a circular positioning it is defined in degrees
+            let positioncurrentId = 90/(leafArray.length-1);
+            //variable to define the distance of the objects to the camera. Dependant to qunaitity of objects to ensure that the space between objects stays large enough and the overview is secured
+            let radius = leafArray.length * 8;
+            //startpoint also in degrees. Starting with 225 since the coordinates will be calculated from the radius and the counterclockwise angle from the positive x axis
+            let startPoint = 225;
+            //loop setting positions for each leaf and running function to create the chosen object
+            for(i = 0; i < leafArray.length; i++)
+            {
+                let positionX = radius * getCosFromDegrees(startPoint + (i * positioncurrentId));
+                let positionZ = radius * getSinFromDegrees(startPoint + (i * positioncurrentId));
+                let name = leafArray[i].name;
+                let id = leafArray[i].id;
+                if(selectedObject == "sphere")
+                {
+                    generateSphere([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
+                }
+                else
+                {
+                generateBox([positionX,positionZ],leafArray[i].imgpath, highlight, name, id);
+                }
             }
         }
 
@@ -460,55 +531,6 @@ function generateText(name,position,highlight, id)
         scene.add(textMesh);
     })
 }
-
-
-
-function changeRadioButtons (parent)
-{
-    let i;
-    let elementList = document.getElementsByName(parent);
-    for (i = 0; i < elementList.length; i++)
-    {
-        if (elementList[i].checked == false)
-        {
-            let innerElementList = document.getElementsByName(elementList[i].id);
-            untoggleRadioButtons(innerElementList);
-        }
-        else if(elementList[i].checked == true)
-        {
-            let innerElementList = document.getElementsByName(elementList[i].id);
-            toggleRadioButtons(innerElementList);
-        }
-    }
-}
-
-function untoggleRadioButtons(elementList)
-{
-    let i;
-    if (elementList.length > 0)
-    {
-        for (i = 0; i < elementList.length; i++)
-        {
-            document.getElementById(elementList[i].id).checked = false;
-            document.getElementById(elementList[i].id).disabled = true;
-            let innerElementList = document.getElementsByName(elementList[i].id);
-            untoggleRadioButtons(innerElementList);
-        }
-    }
-}
-
-function toggleRadioButtons(elementList)
-{
-    let i;
-    if (elementList.length > 0)
-    {
-        for (i = 0; i < elementList.length; i++)
-        {
-            document.getElementById(elementList[i].id).disabled = false;
-        }
-    }
-}
-
 
 /**
  * calculates cosine from degrees
