@@ -7,18 +7,37 @@
   position: absolute;
   display: none;
 }
+#descriptionButton
+{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: none;
+}
+#descriptionArea
+{
+  position:fixed;
+  top: 0%;
+  left: 33%;
+  right: 33%;
+  z-index: 99;
+  display: none;
+  background-color: transparent;
+  color: black;
+}
 #selectionArea
 {
+  position: absolute;
   display: none;
-  background-color: black;
+  background-color: transparent;
   
 }
 h3 
 {
-  color: lightgrey;
+  color: darkblue;
 }
 label 
 {
-  color: lightgrey;
+  color: darkblue;
   margin-right: 50px;
 }

@@ -56,33 +56,38 @@
       },
       {
         "id":"10",
-        "name":"Nominal",
+        "name":"Nominal Map",
         "type":"leaf",
-        "imgpath":"img/nominal.png"
+        "imgpath":"img/nominal.png",
+        "description":"Nominal differences can be represented in thematic maps, such as the mode or a binary value, resulting in a nominal map."
       },
       {
         "id":"11",
-        "name":"Choropleth",
+        "name":"Choropleth Map",
         "type":"leaf",
-        "imgpath":"img/choropleth.png"
+        "imgpath":"img/choropleth.png",
+        "description":"A choropleth map shades enumeration units by their attribute values, primarily relying on colour value."
       },
         {
         "id":"12",
-        "name":"Proportional Symbol",
+        "name":"Proportional Symbol Map",
         "type":"leaf",
-        "imgpath":"img/proportional-symbol.png"
+        "imgpath":"img/proportional-symbol.png",
+        "description":"A proportional symbol map uses the visual variable size to scale point symbols by their attribute value."
       },
       {
         "id":"13",
-        "name":"Isoline",
+        "name":"Isoline Map",
         "type":"leaf",
-        "imgpath":"img/isoline.png"
+        "imgpath":"img/isoline.png",
+        "description":"An isoline map interpolates between sampled attribute values, using the visuale variable location to represent the interpolated attribute gradient as a new geospatial data layer."
       },
       {
         "id":"14",
-        "name":"Dot Density",
+        "name":"Dot Density Map",
         "type":"leaf",
-        "imgpath":"img/dot-density.png"
+        "imgpath":"img/dot-density.png",
+        "description":"A dot density map uses the composite visual vairable numerousness (arrangement combined with size) to adjust the density in dots placed within enumeration units by their attribute values."
       }
     ],
     "edges": 

@@ -46,33 +46,38 @@
       },
       {
         "id":"8",
-        "name":"Choropleth",
+        "name":"Choropleth Map",
         "type":"leaf",
-        "imgpath":"img/choropleth.png"
+        "imgpath":"img/choropleth-map.png",
+        "description":"test"
       },
       {
         "id":"9",
-        "name":"Pie Chart",
+        "name":"Pie Chart Map",
         "type":"leaf",
-        "imgpath":"img/globe.jpg"
+        "imgpath":"img/pie-chart-map.png",
+        "description":"test"
       },
       {
         "id":"10",
-        "name":"Graduated Circle",
+        "name":"Graduated Circle Map",
         "type":"leaf",
-        "imgpath":"img/globe.jpg"
+        "imgpath":"img/graduated-circle-map.png",
+        "description":"test"
       },
       {
         "id":"11",
-        "name":"Dot",
+        "name":"Dot Map",
         "type":"leaf",
-        "imgpath":"img/dot-density.png"
+        "imgpath":"img/dot-map.png",
+        "description":"test"
       },
       {
         "id":"12",
-        "name":"Heat",
+        "name":"Heat Map",
         "type":"leaf",
-        "imgpath":"img/globe.jpg"
+        "imgpath":"img/heat-map.png",
+        "description":"test"
       }
     ],
     "edges": 
@@ -169,6 +174,11 @@
       },
       {
         "source": "6",
+        "target": "11",
+        "type":"meaningful"
+      },
+      {
+        "source": "7",
         "target": "11",
         "type":"meaningful"
       } 
