@@ -3,7 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "engines": {
-    "node": "16.14.1"
+    "node": "16.14.1",
+    "npm": "8.5.4"
   },
   "scripts": {
     "dev": "vite",
