@@ -10,8 +10,9 @@
 #descriptionButton
 {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  bottom: 0%;
+  left: 33%;
+  right: 33%;
   display: none;
 }
 #descriptionArea
@@ -23,7 +24,7 @@
   z-index: 99;
   display: none;
   background-color: transparent;
-  color: black;
+  color: white;
 }
 #selectionArea
 {
@@ -34,10 +35,10 @@
 }
 h3 
 {
-  color: darkblue;
+  color: white;
 }
 label 
 {
-  color: darkblue;
+  color: white;
   margin-right: 50px;
 }

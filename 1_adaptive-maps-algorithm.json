@@ -49,35 +49,35 @@
         "name":"Choropleth Map",
         "type":"leaf",
         "imgpath":"img/choropleth-map.png",
-        "description":"test"
+        "description":"map where areas are shaded in proportion to the value of the attribute at a location"
       },
       {
         "id":"9",
         "name":"Pie Chart Map",
         "type":"leaf",
         "imgpath":"img/pie-chart-map.png",
-        "description":"test"
+        "description":"a combination of a pie chart visualization and a map"
       },
       {
         "id":"10",
         "name":"Graduated Circle Map",
         "type":"leaf",
         "imgpath":"img/graduated-circle-map.png",
-        "description":"test"
+        "description":"map which uses dot symbols to represent a phenomenon, but adjusts the size of the dots based on the magnitude (relative or absolute) of the attribute value"
       },
       {
         "id":"11",
         "name":"Dot Map",
         "type":"leaf",
         "imgpath":"img/dot-map.png",
-        "description":"test"
+        "description":"map which uses dot symbols to represent a phenomenon"
       },
       {
         "id":"12",
         "name":"Heat Map",
         "type":"leaf",
         "imgpath":"img/heat-map.png",
-        "description":"test"
+        "description":"map where locations are shaded in proportion to the value of the attribute at a location"
       }
     ],
     "edges": 

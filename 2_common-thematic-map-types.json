@@ -66,28 +66,28 @@
         "name":"Choropleth Map",
         "type":"leaf",
         "imgpath":"img/choropleth.png",
-        "description":"A choropleth map shades enumeration units by their attribute values, primarily relying on colour value."
+        "description":"A choropleth map shades enumeration units by their attribute values, primarily relying on colour value. Choropleth maps evoke a metaphor of continuous and abrupt phenomena, such as governmental activities, policies, and regulations fixed to political jurisdictions (i.e., enumeration units)."
       },
         {
         "id":"12",
         "name":"Proportional Symbol Map",
         "type":"leaf",
         "imgpath":"img/proportional-symbol.png",
-        "description":"A proportional symbol map uses the visual variable size to scale point symbols by their attribute value."
+        "description":"A proportional symbol map uses the visual variable size to scale point symbols by their attribute value. Proportional symbol maps evoke a discrete and abrupt metaphor, suggesting economic sites of production and distribution like mines, factories, offices, and stores."
       },
       {
         "id":"13",
         "name":"Isoline Map",
         "type":"leaf",
         "imgpath":"img/isoline.png",
-        "description":"An isoline map interpolates between sampled attribute values, using the visuale variable location to represent the interpolated attribute gradient as a new geospatial data layer."
+        "description":"An isoline map interpolates between sampled attribute values, using the visuale variable location to represent the interpolated attribute gradient as a new geospatial data layer. Isoline maps evoke a continous and smooth metaphor, suggesting environmental or geophysical phenomena."
       },
       {
         "id":"14",
         "name":"Dot Density Map",
         "type":"leaf",
         "imgpath":"img/dot-density.png",
-        "description":"A dot density map uses the composite visual vairable numerousness (arrangement combined with size) to adjust the density in dots placed within enumeration units by their attribute values."
+        "description":"A dot density map uses the composite visual variable numerousness (arrangement combined with size) to adjust the density in dots placed within enumeration units by their attribute values. Dot density maps evoke a discrete and smooth metaphor, suggesting the individual bodies of human and social phenomena."
       }
     ],
     "edges": 

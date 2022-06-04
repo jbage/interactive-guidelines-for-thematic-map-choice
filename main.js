@@ -600,7 +600,7 @@ function calculateClosestObject()
             //document.getElementById("descriptionButton").replaceWith(descriptionButton.cloneNode(false));
             descriptionButton.classList.add("btn","btn-primary");
             descriptionButton.id = "descriptionButton";
-            descriptionButton.innerHTML = "Click E to show description of " + child.userData.id;
+            descriptionButton.innerHTML = "Click E to toggle description of " + child.userData.id;
             //descriptionButton.removeEventListener('click', openDiv);
             descriptionButton.addEventListener('click', function openDiv()
             {
@@ -618,13 +618,13 @@ function calculateClosestObject()
                 {
                 document.getElementById("descriptionArea").style.display ="flex";    
                 document.getElementById("descriptionDiv"+id).style.display ="block";
-                descriptionButton.innerHTML = "Click E to hide description of " + child.userData.id;
+                descriptionButton.innerHTML = "Click E to toggle description of " + child.userData.id;
                 }
                 //if the description is shown, hide it
                 else{
                 document.getElementById("descriptionArea").style.display ="none";
                 document.getElementById("descriptionDiv"+id).style.display ="none";
-                descriptionButton.innerHTML = "Click E to show description of " + child.userData.id;
+                descriptionButton.innerHTML = "Click E to toggle description of " + child.userData.id;
                 }
             });
             descriptionButton.style.display ="block";
