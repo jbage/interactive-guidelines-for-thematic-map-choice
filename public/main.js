@@ -524,7 +524,7 @@ function generateText(name,position,highlight, id)
     //loader to load the right font
     let loader = new THREE.FontLoader();
     //loading the font and creating the text geometry
-    loader.load('node_modules/three/examples/fonts/droid/droid_sans_bold.typeface.json', function (font){
+    loader.load('https://unpkg.com/three@0.138.3/examples/fonts/droid/droid_sans_bold.typeface.json', function (font){
         let textGeometry = new THREE.TextGeometry(name,
         {
             font: font,
@@ -563,7 +563,6 @@ function generateDescription(leaf)
     //only create if it does not already exist
     if(element == null)
     {
-    console.log(leaf);
     let div = document.createElement("div");
     div.id = "descriptionDiv"+ leaf.id;
     let headline = document.createElement ("h2");
@@ -590,8 +589,6 @@ function calculateClosestObject()
 
             if (distance <10 && (distance < shortestDistance || shortestDistance == 0))
             {
-            console.log(child);
-            console.log(distance);
             document.getElementById("descriptionButtonArea").innerHTML = "";
             //event listener for example-button1 which will load the first example decision tree
             //let descriptionButton = document.querySelector("#descriptionButton");
@@ -605,7 +602,6 @@ function calculateClosestObject()
             descriptionButton.addEventListener('click', function openDiv()
             {
                 let nodeList = document.getElementById("descriptionArea").childNodes;
-                console.log(nodeList);
                 for (let count=0;count < nodeList.length; count ++)
                 {
                     if(nodeList[count].id != "descriptionDiv"+id)
