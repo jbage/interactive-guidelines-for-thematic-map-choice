@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href= "/css/style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    
+    <title>Interactive Guidelines for Thematic Map Choice</title>
+  </head>
+  <body id="body">
+    <div id="selectExampleText">
+      <button type ="button" class="btn btn-primary" id="exampleText1Button">First Example</button>
+      <button type ="button" class="btn btn-primary" id="exampleText2Button">Second Example</button>
+
+    </div>
+    <div id="textArea">
+        <div id="example1Text">
+          <div>
+            <img src="img/adaptive-maps-algorithm.png">
+          </div>
+          <div class="row">
+            <div class="col-md-auto">
+              <img src="img/choropleth-map2.png" class="thumb">
+            </div>
+            <div class="col">  
+              <h4>Choropleth Map</h4>
+              <p>map where areas are shaded in proportion to the value of the attribute at a location</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-auto">
+              <img src="img/pie-chart-map2.png" class="thumb">
+            </div>
+            <div class="col">
+              <h4>Pie Chart Map</h4>
+              <p>a combination of a pie chart visualization and a map</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-auto"> 
+              <img src="img/graduated-circle-map2.png" class="thumb">
+            </div>
+            <div class="col"> 
+              <h4>Graduated Circle Map</h4>
+              <p>map which uses dot symbols to represent a phenomenon, but adjusts the size of the dots based on the magnitude (relative or absolute) of the attribute value</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-auto"> 
+              <img src="img/dot-map2.png" class="thumb">
+            </div>
+            <div class="col">
+              <h4>Dot Map</h4>
+              <p>map which uses dot symbols to represent a phenomenon</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-auto"> 
+              <img src="img/heat-map2.png" class="thumb">
+            </div>
+            <div class="col">
+              <h4>Heat Map</h4>
+              <p>map where locations are shaded in proportion to the value of the attribute at a location</p>
+            </div>
+          </div>
+        </div>
+        <div id="example2Text">
+          <div class="col">
+          <img src="img/common-thematic-map-types.png">
+          </div>
+          <div class="col">
+            <h4>Nominal Map</h4>
+            <p>Nominal differences can be represented in thematic maps, such as the mode or a binary value, resulting in a nominal map.</p>
+            <h4>Choropleth Map</h4>
+            <p>A choropleth map shades enumeration units by their attribute values, primarily relying on colour value. Choropleth maps evoke a metaphor of continuous and abrupt phenomena, such as governmental activities, policies, and regulations fixed to political jurisdictions (i.e., enumeration units).</p>
+            <h4>Proportional Symbol Map</h4>
+            <p>A proportional symbol map uses the visual variable size to scale point symbols by their attribute value. Proportional symbol maps evoke a discrete and abrupt metaphor, suggesting economic sites of production and distribution like mines, factories, offices, and stores.</p>
+            <h4>Isoline Map</h4>
+            <p>An isoline map interpolates between sampled attribute values, using the visuale variable location to represent the interpolated attribute gradient as a new geospatial data layer. Isoline maps evoke a continous and smooth metaphor, suggesting environmental or geophysical phenomena.</p>
+            <h4>Dot Density Map</h4>
+            <p>A dot density map uses the composite visual variable numerousness (arrangement combined with size) to adjust the density in dots placed within enumeration units by their attribute values. Dot density maps evoke a discrete and smooth metaphor, suggesting the individual bodies of human and social phenomena.</p>
+          </div>
+        </div>
+    </div>
+    <script>
+      let exampleText1Button = document.querySelector("#exampleText1Button");
+      exampleText1Button.addEventListener('click',()=>
+      {
+          //hide selection area of decision trees
+          document.getElementById("selectExampleText").style.visibility ="hidden";
+          //show example1 div
+          document.getElementById("example1Text").style.display="block";
+      });
+      let exampleText2Button = document.querySelector("#exampleText2Button");
+        exampleText2Button.addEventListener('click',()=>
+        {
+            //hide selection area of decision trees
+            document.getElementById("selectExampleText").style.visibility ="hidden";
+            //show example2 div
+            document.getElementById("example2Text").style.display="block";
+        });
+      </script>
+  </body>
+</html>

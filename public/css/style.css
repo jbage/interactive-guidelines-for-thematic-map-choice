@@ -42,3 +42,24 @@ label
   color: white;
   margin-right: 50px;
 }
+
+#chooseType
+{
+  z-index: 99;
+  height: 100vw;
+  width: 100vw
+}
+#example1Text
+{
+  display: none;
+}
+
+#example2Text
+{
+  display: none;
+}
+
+.thumb
+{
+  height: 100px;
+}
