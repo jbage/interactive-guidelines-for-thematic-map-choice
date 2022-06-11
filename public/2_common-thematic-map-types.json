@@ -80,7 +80,7 @@
         "name":"Isoline Map",
         "type":"leaf",
         "imgpath":"img/isoline.png",
-        "description":"An isoline map interpolates between sampled attribute values, using the visuale variable location to represent the interpolated attribute gradient as a new geospatial data layer. Isoline maps evoke a continous and smooth metaphor, suggesting environmental or geophysical phenomena."
+        "description":"An isoline map interpolates between sampled attribute values, using the visual variable location to represent the interpolated attribute gradient as a new geospatial data layer. Isoline maps evoke a continous and smooth metaphor, suggesting environmental or geophysical phenomena."
       },
       {
         "id":"14",

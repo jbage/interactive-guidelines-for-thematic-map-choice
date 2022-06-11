@@ -50,14 +50,6 @@ label
   width: 100vw
 }
 
-.center
-{ position: absolute;
-  top: 50%;
-  margin: auto;
-  width: 30%;
-  transform: translate(0, -50%);
-  text-align: center;
-}
 #example1Text
 {
   display: none;
