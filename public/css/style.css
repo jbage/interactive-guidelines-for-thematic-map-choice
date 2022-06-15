@@ -1,11 +1,13 @@
 #selectDecisionTree
 {
   position: absolute;
+  left: 33%;
+  right: 33%
 }
 #lockButton
 {
   position: absolute;
-  display: none;
+  right: 0%
 }
 #descriptionButton
 {
@@ -30,8 +32,7 @@
 {
   position: absolute;
   display: none;
-  background-color: transparent;
-  
+  background-color: transparent;  
 }
 h3 
 {

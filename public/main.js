@@ -83,11 +83,11 @@ lockButton.addEventListener('click',()=>
 
 controls.addEventListener('lock',()=>
 {
-    lockButton.innerHTML = "Press ESC to Unlock";
+    lockButton.innerHTML = "Esc to stop navigation";
 })
 controls.addEventListener('unlock',()=>
 {
-    lockButton.innerHTML = "Click to Lock";
+    lockButton.innerHTML = "Click to start navigation";
 })
 
 //event listener for example-button1 which will load the first example decision tree
