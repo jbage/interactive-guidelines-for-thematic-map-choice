@@ -6,162 +6,130 @@
       "nodes": 
       [
         {
-          "id":"0", 
-          "name": "Name of decision tree",
-          "type": "root"
+            "id":"0", 
+            "name": "Name of decision tree",
+            "type": "root"
         },
         {
-          "id":"1",
-          "name":"Name of your (first) parameter",
-          "type":"node"
-        },
-        {
-          "id":"2",
-          "name":"Name of your second parameter or the first node",
-          "type":"node"
-        }, 
-        {
-          "id":"3",
-          "name":"Quantitative",
-          "type":"node"
-        },
-        {
-          "id":"4",
-          "name":"Abrupt",
-          "type":"node"
-        },
-        {
-          "id":5,
-          "name":"Smooth",
-          "type":"node"
-        },
-        {
-          "id":"6",
-          "name":"Continous",
-          "type":"node"
-        },
-        {
-          "id":"7",
-            "name":"Discrete",
+            "id":"1",
+            "name":"Name of your (first) parameter",
             "type":"node"
         },
         {
-          "id":"8",
-            "name":"Continous",
+            "id":"2",
+            "name":"Name of your second parameter or first inner node",
             "type":"node"
         },
         {
-          "id":"9",
-            "name":"Discrete",
+            "id":"3",
+            "name":"",
             "type":"node"
         },
         {
-          "id":"10",
-          "name":"Nominal Map",
-          "type":"leaf",
-          "imgpath":"img/nominal.png",
-          "description":"Nominal differences can be represented in thematic maps, such as the mode or a binary value, resulting in a nominal map."
+            "id":"4",
+            "name":"",
+            "type":"node"
         },
         {
-          "id":"11",
-          "name":"Choropleth Map",
-          "type":"leaf",
-          "imgpath":"img/choropleth.png",
-          "description":"A choropleth map shades enumeration units by their attribute values, primarily relying on colour value. Choropleth maps evoke a metaphor of continuous and abrupt phenomena, such as governmental activities, policies, and regulations fixed to political jurisdictions (i.e., enumeration units)."
+            "id":"5",
+            "name":"",
+            "type":"node"
+        },    
+        {
+            "id":"",
+            "name":"Name of a leaf/thematic map of the decision tree",
+            "type":"leaf",
+            "imgpath":"path to the image of your thematic map",
+            "description":"description of the thematic map"
+        },
+        {
+            "id":"",
+            "name":"",
+            "type":"leaf",
+            "imgpath":"",
+            "description":""
         },
           {
-          "id":"12",
-          "name":"Proportional Symbol Map",
-          "type":"leaf",
-          "imgpath":"img/proportional-symbol.png",
-          "description":"A proportional symbol map uses the visual variable size to scale point symbols by their attribute value. Proportional symbol maps evoke a discrete and abrupt metaphor, suggesting economic sites of production and distribution like mines, factories, offices, and stores."
+            "id":"",
+            "name":"",
+            "type":"leaf",
+            "imgpath":"",
+            "description":""
         },
         {
-          "id":"13",
-          "name":"Isoline Map",
-          "type":"leaf",
-          "imgpath":"img/isoline.png",
-          "description":"An isoline map interpolates between sampled attribute values, using the visuale variable location to represent the interpolated attribute gradient as a new geospatial data layer. Isoline maps evoke a continous and smooth metaphor, suggesting environmental or geophysical phenomena."
-        },
-        {
-          "id":"14",
-          "name":"Dot Density Map",
-          "type":"leaf",
-          "imgpath":"img/dot-density.png",
-          "description":"A dot density map uses the composite visual variable numerousness (arrangement combined with size) to adjust the density in dots placed within enumeration units by their attribute values. Dot density maps evoke a discrete and smooth metaphor, suggesting the individual bodies of human and social phenomena."
+            "id":"",
+            "name":"",
+            "type":"leaf",
+            "imgpath":"",
+            "description":""
         }
       ],
       "edges": 
       [
         {
-          "source": "0",
-          "target": "1",
-          "type":"parameter"
+            "source": "0",
+            "target": "1",
+            "type":"parameter"
         },
         {
-          "source": "1",
-          "target": "2",
-          "type": "superclass"
+            "source": "",
+            "target": "",
+            "type": "superclass"
         },
         {
-          "source": "1",
-          "target": "3",
-          "type": "superclass"
+            "source": "",
+            "target": "",
+            "type": "superclass"
         },
         {
-          "source": "2",
-          "target": "10",
-          "type": "meaningful"
+            "source": "",
+            "target": "",
+            "type": "superclass"
         },
         {
-          "source": "3",
-          "target": "4",
-          "type": "superclass"
+            "source": "",
+            "target": "",
+            "type": "superclass"
         },
         {
-          "source": "3",
-          "target": "5",
-          "type": "superclass"
+            "source": "",
+            "target": "",
+            "type": "superclass"
         },
         {
-          "source": "4",
-          "target": "6",
-          "type": "superclass"
+            "source": "",
+            "target": "",
+            "type": "superclass"
         },
         {
-          "source": "4",
-          "target": "7",
-          "type": "superclass"
+            "source": "",
+            "target": "",
+            "type": "superclass"
         },
         {
-          "source": "5",
-          "target": "8",
-          "type": "superclass"
-        },
-        {
-          "source": "5",
-          "target": "9",
-          "type": "superclass"
+            "source": "",
+            "target": "",
+            "type": "superclass"
         },	 
         {
-          "source": "6",
-          "target": "11",
-          "type": "meaningful"
+            "source": "",
+            "target": "",
+            "type": "meaningful"
         },
         {
-          "source": "7",
-          "target": "12",
-          "type": "meaningful"
+            "source": "",
+            "target": "",
+            "type": "meaningful"
         },
         {
-          "source": "8",
-          "target": "13",
-          "type": "meaningful"
+            "source": "",
+            "target": "",
+            "type": "meaningful"
         },
         {
-          "source": "9",
-          "target": "14",
-          "type": "meaningful"
+            "source": "",
+            "target": "",
+            "type": "meaningful"
         }	  
       ]
     }

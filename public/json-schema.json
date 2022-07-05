@@ -36,7 +36,7 @@
                             "name":
                             {
                                 "type": "string",
-                                "desription": "Name of the node, will be displayed as headline, radio button or name of the object in the scene.",
+                                "description": "Name of the node, will be displayed as headline, label of the radio button or name of the object in the scene. Depending on the node type.",
                                 "examples":["Choropleth Map","Data Type"]
                             },
                             "type":
@@ -102,7 +102,7 @@
                             {
                                 "type": "string",
                                 "enum": ["parameter", "superclass", "meaningful"],
-                                "description": "Relation between the connected nodes, displayed by the edge. Parameter describes an edge from the root to the parameters. Superclass describes an edge from a inner node to another inner node and meaningful describes an edge from an inner node to a leaf.",
+                                "description": "Relation between the connected nodes, displayed by the edge. Parameter describes an edge from the root to the parameters. Superclass describes an edge from an inner node or a parameter to an inner node and meaningful describes an edge from an inner node to a leaf.",
                                 "examples":["parameter","superclass","meaningful"]
                             }
                         }
