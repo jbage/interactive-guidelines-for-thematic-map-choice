@@ -1,4 +1,5 @@
 {
+  "$schema":"json-schema.json",
   "graph": 
   {
 	"id": "adaptive-maps-algorithm",

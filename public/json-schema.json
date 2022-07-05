@@ -1,0 +1,114 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "description": "decision tree",
+    "type": "object",
+    "required": ["graph"],
+    "properties":
+    {
+        "graph": 
+        {
+            "type": "object",
+            "description": "graph object",
+            "required": ["id","nodes","edges"],
+            "properties":
+            {
+                "id": 
+                {
+                    "type": "string",
+                    "description": "Name of the graph as String, words separated with hyphens",
+                    "examples": ["common-thematic-map-types","adaptive-maps-algorithm"]
+                },
+                "nodes":
+                {
+                    "type": "array",
+                    "items": 
+                    {
+                        "type": "object",
+                        "required": ["id","name","type"],
+                        "properties":
+                        {
+                            "id":
+                            {
+                                "type": "string",
+                                "description": "Unique id of the node, starting with 0 at the root and counting upwards.",
+                                "examples": ["0","1","2","3","4","5","6","7","8","9"]
+                            },
+                            "name":
+                            {
+                                "type": "string",
+                                "desription": "Name of the node, will be displayed as headline, radio button or name of the object in the scene.",
+                                "examples":["Choropleth Map","Data Type"]
+                            },
+                            "type":
+                            {
+                                "type": "string",
+                                "enum": ["root", "node", "leaf"],
+                                "description": "Type of the node. Inner node = node",
+                                "examples":["root","node","leaf"]
+                            }                      
+                        },
+                        "if":
+                        {
+                            "properties":
+                            {
+                                "type":
+                                {
+                                    "const": "leaf"
+                                }
+                            }
+                        },
+                        "then":
+                        {
+                            "properties": 
+                            {
+                                "imgpath":
+                                {
+                                    "type": "string",
+                                    "description": "Hyperlink to a picture of the respective leaf/thematic map. Will be displayed as sidewall of the cube.",
+                                    "examples":["./examplelink.png","http://example-link.com/picture.png"]
+                                },
+                                "description":
+                                {
+                                    "type": "string",
+                                    "description": "Description for the respective leaf/thematic map. Can be enabled in the scene when the user is in close range of the object.",
+                                    "examples":["Nominal differences can be represented in thematic maps, such as the mode or a binary value, resulting in a nominal map."]
+                                } 
+                            }
+                        } 
+                    }
+                },
+                "edges":
+                {
+                    "type": "array",
+                    "items": 
+                    {
+                        "type": "object",
+                        "required": ["source","target","type"],
+                        "properties":
+                        {
+                            "source":
+                            {
+                                "type": "string",
+                                "description": "Unique id of the origin node of the edge",
+                                "examples": ["0","1","2","3","4","5","6","7","8","9"]
+                            },
+                            "target":
+                            {
+                                "type": "string",
+                                "description": "Unique id of the target node of the edge",
+                                "examples": ["0","1","2","3","4","5","6","7","8","9"]
+                            },
+                            "type":
+                            {
+                                "type": "string",
+                                "enum": ["parameter", "superclass", "meaningful"],
+                                "description": "Relation between the connected nodes, displayed by the edge. Parameter describes an edge from the root to the parameters. Superclass describes an edge from a inner node to another inner node and meaningful describes an edge from an inner node to a leaf.",
+                                "examples":["parameter","superclass","meaningful"]
+                            }
+                        }
+                    }
+                } 
+            }
+        }
+    }
+}

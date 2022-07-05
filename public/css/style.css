@@ -6,6 +6,7 @@
 {
   position: absolute;
   display: none;
+  right: 0%;
 }
 #descriptionButton
 {
@@ -36,6 +37,9 @@
 h3 
 {
   color: white;
+}
+h4{
+  color: blue;
 }
 label 
 {

@@ -1,8 +1,6 @@
 
-
 //Global variables
 let leafArray=[];
-
 
 //Initialize ThreeJS
 var scene = new THREE.Scene();
@@ -83,11 +81,11 @@ lockButton.addEventListener('click',()=>
 
 controls.addEventListener('lock',()=>
 {
-    lockButton.innerHTML = "Press ESC to Unlock";
+    lockButton.innerHTML = "Esc to stop navigation";
 })
 controls.addEventListener('unlock',()=>
 {
-    lockButton.innerHTML = "Click to Lock";
+    lockButton.innerHTML = "Click to start navigation";
 })
 
 //event listener for example-button1 which will load the first example decision tree
@@ -113,6 +111,60 @@ example2Button.addEventListener('click',()=>
 
 });
 
+let uploadForm = document.querySelector("#decisionTreeUpload");
+uploadForm.addEventListener('click',()=>
+{
+    uploadOwnTree();
+});
+
+
+function uploadOwnTree()
+{
+document.getElementById("decisionTreeUpload").addEventListener('change', handleFileSelect, false);
+}
+
+function handleFileSelect(event) 
+{
+    const reader = new FileReader();
+    reader.onload = handleFileLoad;
+    reader.readAsText(event.target.files[0]);
+}
+
+function handleFileLoad(event) {
+        let jsonData = JSON.parse(event.target.result);
+        let jsonNodes = jsonData.graph.nodes;
+        let jsonEdges = jsonData.graph.edges;
+        let nodeArray = [];
+        let i;
+        for (i = 0; i<jsonNodes.length; i++)
+        {
+            if (jsonNodes[i].type == "node" || jsonNodes[i].type == "root")
+            {
+                nodeArray.push(jsonNodes[i]);
+            }
+        }
+        for (i = 0; i<jsonNodes.length; i++)
+        {
+            if (jsonNodes[i].type == "leaf")
+            {
+                leafArray.push(jsonNodes[i]);
+            }
+        }
+        createSelectionArea(nodeArray, jsonEdges);
+        leavesToObjects(leafArray, jsonEdges);
+    document.getElementById("body").addEventListener("keyup", function(event) 
+    {
+        event.preventDefault();
+        if (event.key === "e") 
+        {
+            document.getElementById("descriptionButton").click();
+        }
+    });
+        //hide selection area of decision trees
+        document.getElementById("selectDecisionTree").style.visibility ="hidden";
+        //show button to lock controls
+        document.getElementById("lockButton").style.display="block";
+  }
 
 /**
  * Function to initialize loading of the chosen data from the JSON-file
