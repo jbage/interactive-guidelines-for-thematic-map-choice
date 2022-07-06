@@ -7,7 +7,7 @@ Either one of two examples can be choosed or a own decision tree can be uploaded
 The app was implemented using Node.js, Vitejs, Bootstrap and Three.js. 
 
 ### Run App:
-Run `npm install` and `install vite`, before using the app. With `npm start` the app can be launched and is reached via localhost:3000.
+Run `npm install` and `install vite`, before using the app. With `npm start` the app can be launched and is reached via localhost:3000. For further editing and testing use `npm run dev`.
 
 ### Screenshot:
 ![Screenshot](https://user-images.githubusercontent.com/23523075/177552415-b339816f-43c6-461d-8112-80c005e354a8.PNG)
